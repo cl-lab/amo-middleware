@@ -81,19 +81,10 @@ class Middleware implements iMiddleware
      * @param null|string $modified
      *
      * @return array
-     * @throws \Exception
      */
     public function getContacts($parameters, $modified = null)
     {
-        if (!is_array($parameters)) {
-            throw new \Exception('$parameters not valid. $parameters must be an array');
-        }
-
-        $amo = $this->getAmo();
-
-        $res = $amo->contact->apiList($parameters, $modified);
-
-        return $res;
+        return $this->getObjects('contact', $parameters, $modified);
     }
 
     /**
@@ -106,68 +97,20 @@ class Middleware implements iMiddleware
      */
     public function addContact($parameters, $debug = false)
     {
-        $amo = $this->getAmo();
-        $contact = $amo->contact;
-
-        if ($debug) {
-            $contact->debug(true);
-        }
-
-        $this->setParameters($contact, $parameters);
-
-        $id = $contact->apiAdd();
-
-        return $id;
+        return $this->addObject('contact', $parameters, $debug);
     }
 
     /**
      * Add group of contacts
      *
-     * @param $contacts
+     * @param array $contacts
+     * @param bool $debug
      *
      * @return array
-     * @throws \Exception
      */
-    public function addGroupOfContact($contacts)
+    public function addGroupOfContact($contacts, $debug = false)
     {
-        if (!is_array($contacts)) {
-            throw new \Exception('$contacts not valid. $contacts must be an array');
-        }
-
-        $amo = $this->getAmo();
-
-        $arrOfContacts = array();
-
-        foreach ($contacts as $k => $v) {
-            if (
-                !is_array($v) ||
-                !array_key_exists('parameters', $v)
-            ) {
-                throw new \Exception('List of contacts parameters not valid');
-            }
-
-            if (!array_key_exists('debug', $v) || !$v['debug']) {
-                $debug = false;
-            } else {
-                $debug = true;
-            }
-
-            $contact = $amo->contact;
-            if ($debug) {
-                $contact->debug(true);
-            }
-            $this->setParameters($contact, $v['parameters']);
-
-            $arrOfContacts[] = $contact;
-        }
-
-        if (!$arrOfContacts) {
-            return array();
-        }
-
-        $ids = $amo->contact->apiAdd($arrOfContacts);
-
-        return $ids;
+        return $this->addGroupOfObject('contact', $contacts, $debug);
     }
 
     /**
@@ -182,18 +125,7 @@ class Middleware implements iMiddleware
      */
     public function updateContact($id, $parameters, $modified = 'now', $debug = false)
     {
-        $amo = $this->getAmo();
-        $contact = $amo->contact;
-
-        if ($debug) {
-            $contact->debug(true);
-        }
-
-        $this->setParameters($contact, $parameters);
-
-        $res = $contact->apiUpdate((int)$id, $modified);
-
-        return $res;
+        return $this->updateObject('contact', $id, $parameters, $modified, $debug);
     }
 
     /**
@@ -218,6 +150,60 @@ class Middleware implements iMiddleware
     }
 
     /**
+     * Get lead list. Equivalent to the method leads/list
+     *
+     * @param array $parameters
+     * @param null|string $modified
+     *
+     * @return array
+     */
+    public function getLeads($parameters, $modified = null)
+    {
+        return $this->getObjects('lead', $parameters, $modified);
+    }
+
+    /**
+     * Add one lead
+     *
+     * @param $parameters
+     * @param bool $debug
+     *
+     * @return int
+     */
+    public function addLead($parameters, $debug = false)
+    {
+        return $this->addObject('lead', $parameters, $debug);
+    }
+
+    /**
+     * Add group of contacts
+     *
+     * @param array $contacts
+     * @param bool $debug
+     *
+     * @return array
+     */
+    public function addGroupOfLead($contacts, $debug = false)
+    {
+        return $this->addGroupOfObject('lead', $contacts, $debug);
+    }
+
+    /**
+     * Update lead
+     *
+     * @param int $id
+     * @param array $parameters
+     * @param string $modified
+     * @param bool $debug
+     *
+     * @return bool
+     */
+    public function updateLead($id, $parameters, $modified = 'now', $debug = false)
+    {
+        return $this->updateObject('lead', $id, $parameters, $modified, $debug);
+    }
+
+    /**
      * Return object for work via library
      *
      * @return Client
@@ -229,6 +215,126 @@ class Middleware implements iMiddleware
         }
 
         return $amo;
+    }
+
+    /**
+     * Get object list
+     *
+     * @param array $parameters
+     * @param null|string $modified
+     *
+     * @return array
+     * @throws \Exception
+     */
+    private function getObjects($type, $parameters, $modified = null)
+    {
+        if (!is_array($parameters)) {
+            throw new \Exception('$parameters not valid. $parameters must be an array');
+        }
+
+        $amo = $this->getAmo();
+
+        $res = $amo->{$type}->apiList($parameters, $modified);
+
+        return $res;
+    }
+
+    /**
+     * Add one object
+     *
+     * @param string $type
+     * @param array $parameters
+     * @param bool $debug
+     *
+     * @return int
+     */
+    private function addObject($type, $parameters, $debug = false)
+    {
+        $amo = $this->getAmo();
+        $contact = $amo->{$type};
+
+        if ($debug) {
+            $contact->debug(true);
+        }
+
+        $this->setParameters($contact, $parameters);
+
+        $id = $contact->apiAdd();
+
+        return $id;
+    }
+
+    /**
+     * Add group of objects
+     *
+     * @param string $type
+     * @param array $objects
+     * @param bool $debug
+     *
+     * @return array
+     * @throws \Exception
+     */
+    private function addGroupOfObject($type, $objects, $debug = false)
+    {
+        if (!is_array($objects)) {
+            throw new \Exception('$objects not valid. $objects must be an array');
+        }
+
+        $amo = $this->getAmo();
+
+        $arrOfObjects = array();
+
+        foreach ($objects as $k => $v) {
+            if (
+                !is_array($v) ||
+                !array_key_exists('parameters', $v)
+            ) {
+                throw new \Exception('List of ' . $type . 's parameters not valid');
+            }
+
+            $object = $amo->{$type};
+            if ($debug) {
+                $object->debug(true);
+            }
+            $this->setParameters($object, $v['parameters']);
+
+            $arrOfObjects[] = $object;
+        }
+
+        if (!$arrOfObjects) {
+            return array();
+        }
+
+        $ids = $amo->contact->apiAdd($arrOfObjects);
+
+        return $ids;
+    }
+
+    /**
+     * Update object
+     *
+     * @param string $type
+     * @param int $id
+     * @param array $parameters
+     * @param string $modified
+     * @param bool $debug
+     *
+     * @return bool
+     */
+    private function updateObject($type, $id, $parameters, $modified = 'now', $debug = false)
+    {
+        $amo = $this->getAmo();
+        $object = $amo->{$type};
+
+        if ($debug) {
+            $object->debug(true);
+        }
+
+        $this->setParameters($object, $parameters);
+
+        $res = $object->apiUpdate((int)$id, $modified);
+
+        return $res;
     }
 
     /**

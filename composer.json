@@ -12,6 +12,12 @@
     "require": {
         "dotzero/amocrm": "^0.3.23"
     },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "ssh://git@gitlab.pve.61s.ru:8122/cl-lab/amo-middleware.git"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "CleverLab\\AmoCRM\\": "src"

@@ -1,0 +1,20 @@
+{
+    "name": "cl-lab/amo-middleware",
+    "description": "Обёртка для библиотек работающих с API AmoCRM",
+    "license": "MIT",
+    "keywords": ["amocrm", "crm", "api", "middleware"],
+    "authors": [
+        {
+            "name": "cl-lab",
+            "email": "mail@cl-lab.ru"
+        }
+    ],
+    "require": {
+        "dotzero/amocrm": "^0.3.23"
+    },
+    "autoload": {
+        "psr-4": {
+            "CleverLab\\AmoCRM\\": "src"
+        }
+    }
+}

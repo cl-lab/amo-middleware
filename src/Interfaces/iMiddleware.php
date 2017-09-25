@@ -42,7 +42,7 @@ interface iMiddleware
     /**
      * Add one contact
      *
-     * @param $parameters
+     * @param array $parameters
      * @param bool $debug
      *
      * @return int
@@ -93,7 +93,7 @@ interface iMiddleware
     /**
      * Add one lead
      *
-     * @param $parameters
+     * @param array $parameters
      * @param bool $debug
      *
      * @return int
@@ -121,4 +121,118 @@ interface iMiddleware
      * @return bool
      */
     public function updateLead($id, $parameters, $modified = 'now', $debug = false);
+
+    /**
+     * Get company list
+     *
+     * @param array $parameters
+     * @param null|string $modified
+     *
+     * @return array
+     */
+    public function getCompanies($parameters, $modified = null);
+
+    /**
+     * Add one company
+     *
+     * @param array $parameters
+     * @param bool $debug
+     *
+     * @return int
+     */
+    public function addCompany($parameters, $debug = false);
+
+    /**
+     * Add group of companies
+     *
+     * @param array $contacts
+     * @param bool $debug
+     *
+     * @return array
+     */
+    public function addGroupOfCompanies($contacts, $debug = false);
+
+    /**
+     * Update company
+     *
+     * @param int $id
+     * @param array $parameters
+     * @param string $modified
+     * @param bool $debug
+     *
+     * @return bool
+     */
+    public function updateCompany($id, $parameters, $modified = 'now', $debug = false);
+
+    /**
+     * Get customer list
+     *
+     * @param array $parameters
+     * @param null|string $modified
+     *
+     * @return array
+     */
+    public function getCustomers($parameters, $modified = null);
+
+    /**
+     * Add one customer
+     *
+     * @param array $parameters
+     * @param bool $debug
+     *
+     * @return int
+     */
+    public function addCustomer($parameters, $debug = false);
+
+    /**
+     * Add group of companies
+     *
+     * @param array $contacts
+     * @param bool $debug
+     *
+     * @return array
+     */
+    public function addGroupOfCustomers($contacts, $debug = false);
+
+    /**
+     * Update customer
+     *
+     * @param int $id
+     * @param array $parameters
+     * @param string $modified
+     * @param bool $debug
+     *
+     * @return bool
+     */
+    public function updateCustomer($id, $parameters, $modified = 'now', $debug = false);
+
+    /**
+     * Get transaction list
+     *
+     * @param array $parameters
+     * @param null|string $modified
+     *
+     * @return array
+     */
+    public function getTransactions($parameters, $modified = null);
+
+    /**
+     * Add one transaction
+     *
+     * @param array $parameters
+     * @param bool $debug
+     *
+     * @return int
+     */
+    public function addTransaction($parameters, $debug = false);
+
+    /**
+     * Add group of transactions
+     *
+     * @param array $contacts
+     * @param bool $debug
+     *
+     * @return array
+     */
+    public function addGroupOfTransactions($contacts, $debug = false);
 }

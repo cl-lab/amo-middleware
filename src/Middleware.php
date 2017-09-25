@@ -90,7 +90,7 @@ class Middleware implements iMiddleware
     /**
      * Add one contact
      *
-     * @param $parameters
+     * @param array $parameters
      * @param bool $debug
      *
      * @return int
@@ -165,7 +165,7 @@ class Middleware implements iMiddleware
     /**
      * Add one lead
      *
-     * @param $parameters
+     * @param array $parameters
      * @param bool $debug
      *
      * @return int
@@ -201,6 +201,169 @@ class Middleware implements iMiddleware
     public function updateLead($id, $parameters, $modified = 'now', $debug = false)
     {
         return $this->updateObject('lead', $id, $parameters, $modified, $debug);
+    }
+
+    /**
+     * Get company list. Equivalent to the method company/list
+     *
+     * @param array $parameters
+     * @param null|string $modified
+     *
+     * @return array
+     */
+    public function getCompanies($parameters, $modified = null)
+    {
+        return $this->getObjects('company', $parameters, $modified);
+    }
+
+    /**
+     * Add one company
+     *
+     * @param array $parameters
+     * @param bool $debug
+     *
+     * @return int
+     */
+    public function addCompany($parameters, $debug = false)
+    {
+        return $this->addObject('company', $parameters, $debug);
+    }
+
+    /**
+     * Add group of companies
+     *
+     * @param array $contacts
+     * @param bool $debug
+     *
+     * @return array
+     */
+    public function addGroupOfCompanies($contacts, $debug = false)
+    {
+        return $this->addGroupOfObject('company', $contacts, $debug);
+    }
+
+    /**
+     * Update company
+     *
+     * @param int $id
+     * @param array $parameters
+     * @param string $modified
+     * @param bool $debug
+     *
+     * @return bool
+     */
+    public function updateCompany($id, $parameters, $modified = 'now', $debug = false)
+    {
+        return $this->updateObject('company', $id, $parameters, $modified, $debug);
+    }
+
+    /**
+     * Get customer list. Equivalent to the method customers/list
+     *
+     * @param array $parameters
+     * @param null|string $modified
+     *
+     * @return array
+     */
+    public function getCustomers($parameters, $modified = null)
+    {
+        return $this->getObjects('customer', $parameters, $modified);
+    }
+
+    /**
+     * Add one customer
+     *
+     * @param array $parameters
+     * @param bool $debug
+     *
+     * @return int
+     */
+    public function addCustomer($parameters, $debug = false)
+    {
+        return $this->addObject('customer', $parameters, $debug);
+    }
+
+    /**
+     * Add group of companies
+     *
+     * @param array $contacts
+     * @param bool $debug
+     *
+     * @return array
+     */
+    public function addGroupOfCustomers($contacts, $debug = false)
+    {
+        return $this->addGroupOfObject('customer', $contacts, $debug);
+    }
+
+    /**
+     * Update customer
+     *
+     * @param int $id
+     * @param array $parameters
+     * @param string $modified
+     * @param bool $debug
+     *
+     * @return bool
+     */
+    public function updateCustomer($id, $parameters, $modified = 'now', $debug = false)
+    {
+        return $this->updateObject('customer', $id, $parameters, $modified, $debug);
+    }
+
+    /**
+     * Get transaction list. Equivalent to the method transactions/list
+     *
+     * @param array $parameters
+     * @param null|string $modified
+     *
+     * @return array
+     */
+    public function getTransactions($parameters, $modified = null)
+    {
+        return $this->getObjects('transaction', $parameters, $modified);
+    }
+
+    /**
+     * Add one transaction
+     *
+     * @param array $parameters
+     * @param bool $debug
+     *
+     * @return int
+     */
+    public function addTransaction($parameters, $debug = false)
+    {
+        return $this->addObject('transaction', $parameters, $debug);
+    }
+
+    /**
+     * Add group of transactions
+     *
+     * @param array $contacts
+     * @param bool $debug
+     *
+     * @return array
+     */
+    public function addGroupOfTransactions($contacts, $debug = false)
+    {
+        return $this->addGroupOfObject('transaction', $contacts, $debug);
+    }
+
+    /**
+     * Delete transaction
+     *
+     * @param int $id
+     *
+     * @return bool
+     */
+    public function deleteTransaction($id)
+    {
+        $amo = $this->getAmo();
+
+        $res = $amo->transaction->apiDelete((int)$id);
+
+        return $res;
     }
 
     /**

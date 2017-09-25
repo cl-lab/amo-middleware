@@ -103,14 +103,14 @@ class Middleware implements iMiddleware
     /**
      * Add group of contacts
      *
-     * @param array $contacts
+     * @param array $dataList
      * @param bool $debug
      *
      * @return array
      */
-    public function addGroupOfContact($contacts, $debug = false)
+    public function addGroupOfContacts($dataList, $debug = false)
     {
-        return $this->addGroupOfObject('contact', $contacts, $debug);
+        return $this->addGroupOfObject('contact', $dataList, $debug);
     }
 
     /**
@@ -176,16 +176,16 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Add group of contacts
+     * Add group of leads
      *
-     * @param array $contacts
+     * @param array $dataList
      * @param bool $debug
      *
      * @return array
      */
-    public function addGroupOfLead($contacts, $debug = false)
+    public function addGroupOfLeads($dataList, $debug = false)
     {
-        return $this->addGroupOfObject('lead', $contacts, $debug);
+        return $this->addGroupOfObject('lead', $dataList, $debug);
     }
 
     /**
@@ -232,14 +232,14 @@ class Middleware implements iMiddleware
     /**
      * Add group of companies
      *
-     * @param array $contacts
+     * @param array $dataList
      * @param bool $debug
      *
      * @return array
      */
-    public function addGroupOfCompanies($contacts, $debug = false)
+    public function addGroupOfCompanies($dataList, $debug = false)
     {
-        return $this->addGroupOfObject('company', $contacts, $debug);
+        return $this->addGroupOfObject('company', $dataList, $debug);
     }
 
     /**
@@ -286,14 +286,14 @@ class Middleware implements iMiddleware
     /**
      * Add group of companies
      *
-     * @param array $contacts
+     * @param array $dataList
      * @param bool $debug
      *
      * @return array
      */
-    public function addGroupOfCustomers($contacts, $debug = false)
+    public function addGroupOfCustomers($dataList, $debug = false)
     {
-        return $this->addGroupOfObject('customer', $contacts, $debug);
+        return $this->addGroupOfObject('customer', $dataList, $debug);
     }
 
     /**
@@ -340,14 +340,14 @@ class Middleware implements iMiddleware
     /**
      * Add group of transactions
      *
-     * @param array $contacts
+     * @param array $dataList
      * @param bool $debug
      *
      * @return array
      */
-    public function addGroupOfTransactions($contacts, $debug = false)
+    public function addGroupOfTransactions($dataList, $debug = false)
     {
-        return $this->addGroupOfObject('transaction', $contacts, $debug);
+        return $this->addGroupOfObject('transaction', $dataList, $debug);
     }
 
     /**
@@ -362,6 +362,172 @@ class Middleware implements iMiddleware
         $amo = $this->getAmo();
 
         $res = $amo->transaction->apiDelete((int)$id);
+
+        return $res;
+    }
+
+    /**
+     * Get task list. Equivalent to the method tasks/list
+     *
+     * @param array $parameters
+     * @param null|string $modified
+     *
+     * @return array
+     */
+    public function getTasks($parameters, $modified = null)
+    {
+        return $this->getObjects('task', $parameters, $modified);
+    }
+
+    /**
+     * Add one task
+     *
+     * @param array $parameters
+     * @param bool $debug
+     *
+     * @return int
+     */
+    public function addTask($parameters, $debug = false)
+    {
+        return $this->addObject('task', $parameters, $debug);
+    }
+
+    /**
+     * Add group of tasks
+     *
+     * @param array $dataList
+     * @param bool $debug
+     *
+     * @return array
+     */
+    public function addGroupOfTasks($dataList, $debug = false)
+    {
+        return $this->addGroupOfObject('task', $dataList, $debug);
+    }
+
+    /**
+     * Update task
+     *
+     * @param int $id
+     * @param array $text
+     * @param string $modified
+     * @param bool $debug
+     *
+     * @return bool
+     */
+    public function updateTask($id, $text, $modified = 'now', $debug = false)
+    {
+        $amo = $this->getAmo();
+
+        $task = $amo->task;
+
+        if ($debug) {
+            $task->debug(true);
+        }
+
+        return $task->apiUpdate((int)$id, $task, $modified);
+    }
+
+    /**
+     * Get note list. Equivalent to the method notes/list
+     *
+     * @param array $parameters
+     * @param null|string $modified
+     *
+     * @return array
+     */
+    public function getNotes($parameters, $modified = null)
+    {
+        return $this->getObjects('note', $parameters, $modified);
+    }
+
+    /**
+     * Add one note
+     *
+     * @param array $parameters
+     * @param bool $debug
+     *
+     * @return int
+     */
+    public function addNote($parameters, $debug = false)
+    {
+        return $this->addObject('note', $parameters, $debug);
+    }
+
+    /**
+     * Add group of notes
+     *
+     * @param array $dataList
+     * @param bool $debug
+     *
+     * @return array
+     */
+    public function addGroupOfNotes($dataList, $debug = false)
+    {
+        return $this->addGroupOfObject('note', $dataList, $debug);
+    }
+
+    /**
+     * Update note
+     *
+     * @param int $id
+     * @param array $parameters
+     * @param string $modified
+     * @param bool $debug
+     *
+     * @return bool
+     */
+    public function updateNote($id, $parameters, $modified = 'now', $debug = false)
+    {
+        return $this->updateObject('customer', $id, $parameters, $modified, $debug);
+    }
+
+    /**
+     * Add one custom field
+     *
+     * @param array $parameters
+     * @param bool $debug
+     *
+     * @return int
+     */
+    public function addCustomField($parameters, $debug = false)
+    {
+        return $this->addObject('custom_field', $parameters, $debug);
+    }
+
+    /**
+     * Add group of custom fields
+     *
+     * @param array $dataList
+     * @param bool $debug
+     *
+     * @return array
+     */
+    public function addGroupOfCustomFields($dataList, $debug = false)
+    {
+        return $this->addGroupOfObject('custom_field', $dataList, $debug);
+    }
+
+    /**
+     * Delete custom field
+     *
+     * @param int $id
+     * @param string $origin
+     * @param bool $debug
+     *
+     * @return bool
+     */
+    public function deleteCustomField($id, $origin, $debug = false)
+    {
+        $amo = $this->getAmo();
+
+        $field = $amo->custom_field;
+
+        if ($debug) {
+            $field->debug(true);
+        }
+
+        $res = $field->apiDelete($id, $origin);
 
         return $res;
     }
@@ -431,23 +597,23 @@ class Middleware implements iMiddleware
      * Add group of objects
      *
      * @param string $type
-     * @param array $objects
+     * @param array $dataList
      * @param bool $debug
      *
      * @return array
      * @throws \Exception
      */
-    private function addGroupOfObject($type, $objects, $debug = false)
+    private function addGroupOfObject($type, $dataList, $debug = false)
     {
-        if (!is_array($objects)) {
-            throw new \Exception('$objects not valid. $objects must be an array');
+        if (!is_array($dataList)) {
+            throw new \Exception('$dataList not valid. $dataList must be an array');
         }
 
         $amo = $this->getAmo();
 
         $arrOfObjects = array();
 
-        foreach ($objects as $k => $v) {
+        foreach ($dataList as $k => $v) {
             if (
                 !is_array($v) ||
                 !array_key_exists('parameters', $v)

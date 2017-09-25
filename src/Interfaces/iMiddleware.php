@@ -52,12 +52,12 @@ interface iMiddleware
     /**
      * Add group of contacts
      *
-     * @param array $contacts
+     * @param array $dataList
      * @param bool $debug
      *
      * @return array
      */
-    public function addGroupOfContact($contacts, $debug = false);
+    public function addGroupOfContacts($dataList, $debug = false);
 
     /**
      * Update contact
@@ -101,14 +101,14 @@ interface iMiddleware
     public function addLead($parameters, $debug = false);
 
     /**
-     * Add group of contacts
+     * Add group of leads
      *
-     * @param array $contacts
+     * @param array $dataList
      * @param bool $debug
      *
      * @return array
      */
-    public function addGroupOfLead($contacts, $debug = false);
+    public function addGroupOfLeads($dataList, $debug = false);
 
     /**
      * Update lead
@@ -145,12 +145,12 @@ interface iMiddleware
     /**
      * Add group of companies
      *
-     * @param array $contacts
+     * @param array $dataList
      * @param bool $debug
      *
      * @return array
      */
-    public function addGroupOfCompanies($contacts, $debug = false);
+    public function addGroupOfCompanies($dataList, $debug = false);
 
     /**
      * Update company
@@ -185,14 +185,14 @@ interface iMiddleware
     public function addCustomer($parameters, $debug = false);
 
     /**
-     * Add group of companies
+     * Add group of customers
      *
-     * @param array $contacts
+     * @param array $dataList
      * @param bool $debug
      *
      * @return array
      */
-    public function addGroupOfCustomers($contacts, $debug = false);
+    public function addGroupOfCustomers($dataList, $debug = false);
 
     /**
      * Update customer
@@ -229,10 +229,125 @@ interface iMiddleware
     /**
      * Add group of transactions
      *
-     * @param array $contacts
+     * @param array $dataList
      * @param bool $debug
      *
      * @return array
      */
-    public function addGroupOfTransactions($contacts, $debug = false);
+    public function addGroupOfTransactions($dataList, $debug = false);
+
+    /**
+     * Get task list
+     *
+     * @param array $parameters
+     * @param null|string $modified
+     *
+     * @return array
+     */
+    public function getTasks($parameters, $modified = null);
+
+    /**
+     * Add one task
+     *
+     * @param array $parameters
+     * @param bool $debug
+     *
+     * @return int
+     */
+    public function addTask($parameters, $debug = false);
+
+    /**
+     * Add group of tasks
+     *
+     * @param array $dataList
+     * @param bool $debug
+     *
+     * @return array
+     */
+    public function addGroupOfTasks($dataList, $debug = false);
+
+    /**
+     * Update task
+     *
+     * @param int $id
+     * @param array $text
+     * @param string $modified
+     * @param bool $debug
+     *
+     * @return bool
+     */
+    public function updateTask($id, $text, $modified = 'now', $debug = false);
+
+    /**
+     * Get note list
+     *
+     * @param array $parameters
+     * @param null|string $modified
+     *
+     * @return array
+     */
+    public function getNotes($parameters, $modified = null);
+
+    /**
+     * Add one note
+     *
+     * @param array $parameters
+     * @param bool $debug
+     *
+     * @return int
+     */
+    public function addNote($parameters, $debug = false);
+
+    /**
+     * Add group of notes
+     *
+     * @param array $dataList
+     * @param bool $debug
+     *
+     * @return array
+     */
+    public function addGroupOfNotes($dataList, $debug = false);
+
+    /**
+     * Update note
+     *
+     * @param int $id
+     * @param array $parameters
+     * @param string $modified
+     * @param bool $debug
+     *
+     * @return bool
+     */
+    public function updateNote($id, $parameters, $modified = 'now', $debug = false);
+
+    /**
+     * Add one custom field
+     *
+     * @param array $parameters
+     * @param bool $debug
+     *
+     * @return int
+     */
+    public function addCustomField($parameters, $debug = false);
+
+    /**
+     * Add group of custom fields
+     *
+     * @param array $dataList
+     * @param bool $debug
+     *
+     * @return array
+     */
+    public function addGroupOfCustomFields($dataList, $debug = false);
+
+    /**
+     * Delete custom field
+     *
+     * @param int $id
+     * @param string $origin
+     * @param bool $debug
+     *
+     * @return bool
+     */
+    public function deleteCustomField($id, $origin, $debug = false);
 }

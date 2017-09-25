@@ -2,23 +2,18 @@
     "name": "cl-lab/amo-middleware",
     "description": "Обёртка для библиотек работающих с API AmoCRM",
     "license": "MIT",
-    "type": "project",
+    "type": "package",
     "keywords": ["amocrm", "crm", "api", "middleware"],
     "authors": [
         {
-            "name": "cl-lab",
-            "email": "mail@cl-lab.ru"
+            "name": "Alexey Konovalenko",
+            "email": "alexey.konovalenko@cl-lab.ru",
+            "role": "Developer"
         }
     ],
     "require": {
         "dotzero/amocrm": "^0.3.23"
     },
-    "repositories": [
-        {
-            "type": "git",
-            "url": "ssh://git@gitlab.pve.61s.ru:8122/cl-lab/amo-middleware.git"
-        }
-    ],
     "autoload": {
         "psr-4": {
             "CleverLab\\AmoCRM\\": "src"

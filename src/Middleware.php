@@ -8,6 +8,7 @@
 
 namespace CleverLab\AmoCRM;
 
+use AmoCRM\Exception;
 use CleverLab\AmoCRM\Interfaces\iMiddleware;
 use AmoCRM\Client;
 
@@ -80,12 +81,138 @@ class Middleware implements iMiddleware
      * @param null|string $modified
      *
      * @return array
+     * @throws \Exception
      */
     public function getContacts($parameters, $modified = null)
     {
+        if (!is_array($parameters)) {
+            throw new \Exception('$parameters not valid. $parameters must be an array');
+        }
+
         $amo = $this->getAmo();
 
         $res = $amo->contact->apiList($parameters, $modified);
+
+        return $res;
+    }
+
+    /**
+     * Add one contact
+     *
+     * @param $parameters
+     * @param bool $debug
+     *
+     * @return int
+     */
+    public function addContact($parameters, $debug = false)
+    {
+        $amo = $this->getAmo();
+        $contact = $amo->contact;
+
+        if ($debug) {
+            $contact->debug(true);
+        }
+
+        $this->setParameters($contact, $parameters);
+
+        $id = $contact->apiAdd();
+
+        return $id;
+    }
+
+    /**
+     * Add group of contacts
+     *
+     * @param $contacts
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function addGroupOfContact($contacts)
+    {
+        if (!is_array($contacts)) {
+            throw new \Exception('$contacts not valid. $contacts must be an array');
+        }
+
+        $amo = $this->getAmo();
+
+        $arrOfContacts = array();
+
+        foreach ($contacts as $k => $v) {
+            if (
+                !is_array($v) ||
+                !array_key_exists('parameters', $v)
+            ) {
+                throw new \Exception('List of contacts parameters not valid');
+            }
+
+            if (!array_key_exists('debug', $v) || !$v['debug']) {
+                $debug = false;
+            } else {
+                $debug = true;
+            }
+
+            $contact = $amo->contact;
+            if ($debug) {
+                $contact->debug(true);
+            }
+            $this->setParameters($contact, $v['parameters']);
+
+            $arrOfContacts[] = $contact;
+        }
+
+        if (!$arrOfContacts) {
+            return array();
+        }
+
+        $ids = $amo->contact->apiAdd($arrOfContacts);
+
+        return $ids;
+    }
+
+    /**
+     * Update contact
+     *
+     * @param int $id
+     * @param array $parameters
+     * @param string $modified
+     * @param bool $debug
+     *
+     * @return bool
+     */
+    public function updateContact($id, $parameters, $modified = 'now', $debug = false)
+    {
+        $amo = $this->getAmo();
+        $contact = $amo->contact;
+
+        if ($debug) {
+            $contact->debug(true);
+        }
+
+        $this->setParameters($contact, $parameters);
+
+        $res = $contact->apiUpdate((int)$id, $modified);
+
+        return $res;
+    }
+
+    /**
+     * Get links between leads and contacts
+     *
+     * @param array $parameters
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function getContactLinks($parameters)
+    {
+        if (!is_array($parameters)) {
+            throw new \Exception('$parameters not valid. $parameters must be an array');
+        }
+
+        $amo = $this->getAmo();
+
+        $res = $amo->contact->apiLinks($parameters);
 
         return $res;
     }
@@ -102,5 +229,65 @@ class Middleware implements iMiddleware
         }
 
         return $amo;
+    }
+
+    /**
+     * Set parameters for object
+     *
+     * @param object $object
+     * @param array $parameters
+     *
+     * @throws \Exception
+     */
+    private function setParameters($object, $parameters)
+    {
+        if (!is_array($parameters)) {
+            throw new \Exception('$parameters not valid. $parameters must be an array');
+        }
+
+        foreach ($parameters as $k => $v) {
+            if ('custom_fields' == $k) {
+                $this->addCustomFields($object, $v);
+            } else {
+                $object[$k] = $v;
+            }
+        }
+    }
+
+    /**
+     * Add custom field to object
+     *
+     * @param object $object
+     * @param array $customFields
+     *
+     * @throws \Exception
+     */
+    private function addCustomFields($object, $customFields)
+    {
+        if (!is_array($customFields)) {
+            throw new \Exception('$customFields not valid. $customFields must be an array');
+        }
+
+        foreach ($customFields as $k => $data) {
+            if (
+                !array_key_exists('id', $data) ||
+                !array_key_exists('value', $data)
+            ) {
+                throw new \Exception('Not valid $customFields array');
+            }
+
+            if (!array_key_exists('enum', $data) || !$data['enum']) {
+                $enum = false;
+            } else {
+                $enum = true;
+            }
+            if (!array_key_exists('subtype', $data) || !$data['subtype']) {
+                $subtype = false;
+            } else {
+                $subtype = true;
+            }
+
+            $object->addCustomField((int)$data['id'], $data['value'], $enum, $subtype);
+        }
     }
 }

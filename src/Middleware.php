@@ -16,7 +16,6 @@
 
 namespace CleverLab\AmoCRM;
 
-use AmoCRM\Exception;
 use CleverLab\AmoCRM\Interfaces\iMiddleware;
 use AmoCRM\Client;
 
@@ -103,7 +102,7 @@ class Middleware implements iMiddleware
      * @param array $parameters Ассоциативный массив параметров
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
-     * @return int
+     * @return int Уникальный идентификатор контакта
      */
     public function addContact($parameters, $debug = false)
     {
@@ -116,7 +115,7 @@ class Middleware implements iMiddleware
      * @param array $dataList Список массивов содержащих параметры
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
-     * @return array
+     * @return array Массив уникальных идентификаторов контактов
      */
     public function addGroupOfContacts($dataList, $debug = false)
     {
@@ -131,7 +130,7 @@ class Middleware implements iMiddleware
      * @param string $modified Дополнительная фильтрация по (изменено с)
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
-     * @return bool
+     * @return bool Флаг успешности выполнения запроса
      */
     public function updateContact($id, $parameters, $modified = 'now', $debug = false)
     {
@@ -179,7 +178,7 @@ class Middleware implements iMiddleware
      * @param array $parameters Ассоциативный массив параметров
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
-     * @return int
+     * @return int Уникальный идентификатор сделки
      */
     public function addLead($parameters, $debug = false)
     {
@@ -192,7 +191,7 @@ class Middleware implements iMiddleware
      * @param array $dataList Список массивов содержащих параметры
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
-     * @return array
+     * @return array Массив уникальных идентификаторов сделок
      */
     public function addGroupOfLeads($dataList, $debug = false)
     {
@@ -207,7 +206,7 @@ class Middleware implements iMiddleware
      * @param string $modified Дополнительная фильтрация по (изменено с)
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
-     * @return bool
+     * @return bool Флаг успешности выполнения запроса
      */
     public function updateLead($id, $parameters, $modified = 'now', $debug = false)
     {
@@ -234,7 +233,7 @@ class Middleware implements iMiddleware
      * @param array $parameters Ассоциативный массив параметров
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
-     * @return int
+     * @return int Уникальный идентификатор компании
      */
     public function addCompany($parameters, $debug = false)
     {
@@ -247,7 +246,7 @@ class Middleware implements iMiddleware
      * @param array $dataList Список массивов содержащих параметры
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
-     * @return array
+     * @return array Массив уникальных идентификаторов компаний
      */
     public function addGroupOfCompanies($dataList, $debug = false)
     {
@@ -262,7 +261,7 @@ class Middleware implements iMiddleware
      * @param string $modified Дополнительная фильтрация по (изменено с)
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
-     * @return bool
+     * @return bool Флаг успешности выполнения запроса
      */
     public function updateCompany($id, $parameters, $modified = 'now', $debug = false)
     {
@@ -289,7 +288,7 @@ class Middleware implements iMiddleware
      * @param array $parameters Ассоциативный массив параметров
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
-     * @return int
+     * @return int Уникальный идентификатор покупателя
      */
     public function addCustomer($parameters, $debug = false)
     {
@@ -302,7 +301,7 @@ class Middleware implements iMiddleware
      * @param array $dataList Список массивов содержащих параметры
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
-     * @return array
+     * @return array Массив уникальных идентификаторов покупателей
      */
     public function addGroupOfCustomers($dataList, $debug = false)
     {
@@ -317,7 +316,7 @@ class Middleware implements iMiddleware
      * @param string $modified Дополнительная фильтрация по (изменено с)
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
-     * @return bool
+     * @return bool Флаг успешности выполнения запроса
      */
     public function updateCustomer($id, $parameters, $modified = 'now', $debug = false)
     {
@@ -339,12 +338,12 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Add one transaction
+     * Добавляет транзакцию
      *
      * @param array $parameters Ассоциативный массив параметров
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
-     * @return int
+     * @return int Уникальный идентификатор транзакции
      */
     public function addTransaction($parameters, $debug = false)
     {
@@ -352,12 +351,12 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Add group of transactions
+     * Групповое добавление транзакций
      *
      * @param array $dataList Список массивов содержащих параметры
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
-     * @return array
+     * @return array Массив уникальных идентификаторов транзакций
      */
     public function addGroupOfTransactions($dataList, $debug = false)
     {
@@ -365,11 +364,11 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Delete transaction
+     * Удаляет транзакцию
      *
-     * @param int $id
+     * @param int $id Идентификатор транзакции
      *
-     * @return bool
+     * @return bool Флаг успешности выполнения запроса
      */
     public function deleteTransaction($id)
     {
@@ -381,7 +380,8 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Get task list. Equivalent to the method tasks/list
+     * Возвращает список задач.
+     * Эквивалентно методу tasks/list
      *
      * @param array $parameters Ассоциативный массив параметров
      * @param null|string $modified Дополнительная фильтрация по (изменено с)
@@ -394,12 +394,12 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Add one task
+     * Добавляет задачу
      *
      * @param array $parameters Ассоциативный массив параметров
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
-     * @return int
+     * @return int Уникальный идентификатор задачи
      */
     public function addTask($parameters, $debug = false)
     {
@@ -407,12 +407,12 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Add group of tasks
+     * Групповое добавление задач
      *
      * @param array $dataList Список массивов содержащих параметры
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
-     * @return array
+     * @return array Массив уникальных идентификаторов задач
      */
     public function addGroupOfTasks($dataList, $debug = false)
     {
@@ -420,14 +420,14 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Update task
+     * Обновляет задачу
      *
      * @param int $id Идентификатор задачи
      * @param array $text Список массивов содержащих параметры
      * @param string $modified Дополнительная фильтрация по (изменено с)
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
-     * @return bool
+     * @return bool Флаг успешности выполнения запроса
      */
     public function updateTask($id, $text, $modified = 'now', $debug = false)
     {
@@ -443,7 +443,8 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Get note list. Equivalent to the method notes/list
+     * Возвращает список примечаний.
+     * Эквивалентно методу notes/list
      *
      * @param array $parameters Ассоциативный массив параметров
      * @param null|string $modified Дополнительная фильтрация по (изменено с)
@@ -456,12 +457,12 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Add one note
+     * Добавляет примечание
      *
      * @param array $parameters Ассоциативный массив параметров
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
-     * @return int
+     * @return int Уникальный идентификатор примечания
      */
     public function addNote($parameters, $debug = false)
     {
@@ -469,12 +470,12 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Add group of notes
+     * Групповое добавление примечаний
      *
      * @param array $dataList Список массивов содержащих параметры
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
-     * @return array
+     * @return array Массив уникальных идентификаторов примечаний
      */
     public function addGroupOfNotes($dataList, $debug = false)
     {
@@ -482,14 +483,14 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Update note
+     * Обновление примечаний
      *
      * @param int $id Идентификатор примечания
      * @param array $parameters Ассоциативный массив параметров
      * @param string $modified Дополнительная фильтрация по (изменено с)
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
-     * @return bool
+     * @return bool Флаг успешности выполнения запроса
      */
     public function updateNote($id, $parameters, $modified = 'now', $debug = false)
     {
@@ -497,12 +498,12 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Add one custom field
+     * Добавляет дополнительное поле
      *
      * @param array $parameters Ассоциативный массив параметров
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
-     * @return int
+     * @return int Уникальный идентификатор поля
      */
     public function addCustomField($parameters, $debug = false)
     {
@@ -510,12 +511,12 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Add group of custom fields
+     * Групповое добавление дополнительных полей
      *
      * @param array $dataList Список массивов содержащих параметры
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
-     * @return array
+     * @return array Массив уникальных идентификаторов полей
      */
     public function addGroupOfCustomFields($dataList, $debug = false)
     {
@@ -523,13 +524,13 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Delete custom field
+     * Удаляет дополнительное поле
      *
-     * @param int $id
-     * @param string $origin
+     * @param int $id Идентификатор дополнительного поля
+     * @param string $origin Уникальный идентификатор сервиса заданный при создании параметром origin
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
-     * @return bool
+     * @return bool Флаг успешности выполнения запроса
      */
     public function deleteCustomField($id, $origin, $debug = false)
     {
@@ -554,7 +555,7 @@ class Middleware implements iMiddleware
      * @param array $parameters Ассоциативный массив параметров
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
-     * @return string
+     * @return string Уникальный идентификатор звонка
      * @throws \Exception
      */
     public function addCall($code, $key, $parameters, $debug = false)
@@ -574,7 +575,7 @@ class Middleware implements iMiddleware
      * @param array $dataList Список массивов содержащих параметры для звонков
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
-     * @return array|string
+     * @return array Массив уникальных идентификаторов звонков
      * @throws \Exception
      */
     public function addGroupOfCalls($code, $key, $dataList, $debug = false)

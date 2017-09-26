@@ -11,206 +11,207 @@ namespace CleverLab\AmoCRM\Interfaces;
 interface iMiddleware
 {
     /**
-     * Get account information
+     * Возвращает информацию по аккаунту.
      *
-     * @param bool $short
-     * @param array $parameters
+     * @param bool $short Краткий формат, только основные поля
+     * @param array $parameters Ассоциативный массив параметров к amoCRM API
      *
      * @return array
      */
     public function getAccount($short = false, $parameters = array());
 
     /**
-     * Get user by login
+     * Возвращает сведения о пользователе по его логину.
+     * Если не указывать логин, вернутся сведения о владельце API ключа.
      *
-     * @param string $login
+     * @param string $login Логин пользователя
      *
      * @return mixed
      */
     public function getUserByLogin($login);
 
     /**
-     * Get contact list
+     * Возвращает список контактов.
      *
-     * @param array $parameters
-     * @param null|string $modified
+     * @param array $parameters Ассоциативный массив параметров
+     * @param null|string $modified Дополнительная фильтрация по (изменено с)
      *
      * @return array
      */
     public function getContacts($parameters, $modified = null);
 
     /**
-     * Add one contact
+     * Добавляет контакт
      *
-     * @param array $parameters
-     * @param bool $debug
+     * @param array $parameters Ассоциативный массив параметров
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return int
      */
     public function addContact($parameters, $debug = false);
 
     /**
-     * Add group of contacts
+     * Групповое добавление контактов
      *
-     * @param array $dataList
-     * @param bool $debug
+     * @param array $dataList Список массивов содержащих параметры
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return array
      */
     public function addGroupOfContacts($dataList, $debug = false);
 
     /**
-     * Update contact
+     * Обновляет контакт
      *
-     * @param int $id
-     * @param array $parameters
-     * @param string $modified
-     * @param bool $debug
+     * @param int $id Идентификатор контакта
+     * @param array $parameters Ассоциативный массив параметров
+     * @param string $modified Дополнительная фильтрация по (изменено с)
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return bool
      */
     public function updateContact($id, $parameters, $modified = 'now', $debug = false);
 
     /**
-     * Get links between leads and contacts
+     * Возвращает связи между сделками и контактами
      *
-     * @param array $parameters
+     * @param array $parameters Ассоциативный массив параметров
      *
      * @return array
      */
     public function getContactLinks($parameters);
 
     /**
-     * Get lead list
+     * Возвращает список сделок
      *
-     * @param array $parameters
-     * @param null|string $modified
+     * @param array $parameters Ассоциативный массив параметров
+     * @param null|string $modified Дополнительная фильтрация по (изменено с)
      *
      * @return array
      */
     public function getLeads($parameters, $modified = null);
 
     /**
-     * Add one lead
+     * Добавляет сделку
      *
-     * @param array $parameters
-     * @param bool $debug
+     * @param array $parameters Ассоциативный массив параметров
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return int
      */
     public function addLead($parameters, $debug = false);
 
     /**
-     * Add group of leads
+     * Групповое добавление сделок
      *
-     * @param array $dataList
-     * @param bool $debug
+     * @param array $dataList Список массивов содержащих параметры
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return array
      */
     public function addGroupOfLeads($dataList, $debug = false);
 
     /**
-     * Update lead
+     * Обновляет сделку
      *
-     * @param int $id
-     * @param array $parameters
-     * @param string $modified
-     * @param bool $debug
+     * @param int $id Идентификатор сделки
+     * @param array $parameters Ассоциативный массив параметров
+     * @param string $modified Дополнительная фильтрация по (изменено с)
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return bool
      */
     public function updateLead($id, $parameters, $modified = 'now', $debug = false);
 
     /**
-     * Get company list
+     * Возвращает список компаний.
      *
-     * @param array $parameters
-     * @param null|string $modified
+     * @param array $parameters Ассоциативный массив параметров
+     * @param null|string $modified Дополнительная фильтрация по (изменено с)
      *
      * @return array
      */
     public function getCompanies($parameters, $modified = null);
 
     /**
-     * Add one company
+     * Добавляет компанию
      *
-     * @param array $parameters
-     * @param bool $debug
+     * @param array $parameters Ассоциативный массив параметров
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return int
      */
     public function addCompany($parameters, $debug = false);
 
     /**
-     * Add group of companies
+     * Групповое добавление компаний
      *
-     * @param array $dataList
-     * @param bool $debug
+     * @param array $dataList Список массивов содержащих параметры
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return array
      */
     public function addGroupOfCompanies($dataList, $debug = false);
 
     /**
-     * Update company
+     * Обновляет компанию
      *
-     * @param int $id
-     * @param array $parameters
-     * @param string $modified
-     * @param bool $debug
+     * @param int $id Идентификатор компании
+     * @param array $parameters Ассоциативный массив параметров
+     * @param string $modified Дополнительная фильтрация по (изменено с)
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return bool
      */
     public function updateCompany($id, $parameters, $modified = 'now', $debug = false);
 
     /**
-     * Get customer list
+     * Возвращает список покупателей
      *
-     * @param array $parameters
-     * @param null|string $modified
+     * @param array $parameters Ассоциативный массив параметров
+     * @param null|string $modified Дополнительная фильтрация по (изменено с)
      *
      * @return array
      */
     public function getCustomers($parameters, $modified = null);
 
     /**
-     * Add one customer
+     * Добавляет покупателя
      *
-     * @param array $parameters
-     * @param bool $debug
+     * @param array $parameters Ассоциативный массив параметров
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return int
      */
     public function addCustomer($parameters, $debug = false);
 
     /**
-     * Add group of customers
+     * Групповое добавление покупателей
      *
-     * @param array $dataList
-     * @param bool $debug
+     * @param array $dataList Список массивов содержащих параметры
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return array
      */
     public function addGroupOfCustomers($dataList, $debug = false);
 
     /**
-     * Update customer
+     * Обновляет покупателя
      *
-     * @param int $id
-     * @param array $parameters
-     * @param string $modified
-     * @param bool $debug
+     * @param int $id Идентификатор покупателя
+     * @param array $parameters Ассоциативный массив параметров
+     * @param string $modified Дополнительная фильтрация по (изменено с)
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return bool
      */
     public function updateCustomer($id, $parameters, $modified = 'now', $debug = false);
 
     /**
-     * Get transaction list
+     * Возвращает список транзакций.
      *
-     * @param array $parameters
-     * @param null|string $modified
+     * @param array $parameters Ассоциативный массив параметров
+     * @param null|string $modified Дополнительная фильтрация по (изменено с)
      *
      * @return array
      */
@@ -220,7 +221,7 @@ interface iMiddleware
      * Add one transaction
      *
      * @param array $parameters
-     * @param bool $debug
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return int
      */
@@ -230,7 +231,7 @@ interface iMiddleware
      * Add group of transactions
      *
      * @param array $dataList
-     * @param bool $debug
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return array
      */
@@ -250,7 +251,7 @@ interface iMiddleware
      * Add one task
      *
      * @param array $parameters
-     * @param bool $debug
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return int
      */
@@ -260,7 +261,7 @@ interface iMiddleware
      * Add group of tasks
      *
      * @param array $dataList
-     * @param bool $debug
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return array
      */
@@ -272,7 +273,7 @@ interface iMiddleware
      * @param int $id
      * @param array $text
      * @param string $modified
-     * @param bool $debug
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return bool
      */
@@ -292,7 +293,7 @@ interface iMiddleware
      * Add one note
      *
      * @param array $parameters
-     * @param bool $debug
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return int
      */
@@ -302,7 +303,7 @@ interface iMiddleware
      * Add group of notes
      *
      * @param array $dataList
-     * @param bool $debug
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return array
      */
@@ -314,7 +315,7 @@ interface iMiddleware
      * @param int $id
      * @param array $parameters
      * @param string $modified
-     * @param bool $debug
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return bool
      */
@@ -324,7 +325,7 @@ interface iMiddleware
      * Add one custom field
      *
      * @param array $parameters
-     * @param bool $debug
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return int
      */
@@ -334,7 +335,7 @@ interface iMiddleware
      * Add group of custom fields
      *
      * @param array $dataList
-     * @param bool $debug
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return array
      */
@@ -345,7 +346,7 @@ interface iMiddleware
      *
      * @param int $id
      * @param string $origin
-     * @param bool $debug
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return bool
      */

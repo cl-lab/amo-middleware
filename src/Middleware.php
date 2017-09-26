@@ -4,6 +4,14 @@
  * User: ak
  * Date: 25.09.17
  * Time: 10:51
+ *
+ * Данный класс является обёрткой для библиотеки https://github.com/dotzero/amocrm-php и является частью пакета
+ * предназначенного для обеспечения единого интерфейса работы с AmoCRM.
+ * При обработке исключений генерируемых данным классом, стоит учесть тот факт, что данный коласс выбрасывает исключения
+ * в случаи если был переданны данные не того типа который ожидает функция или в случаи не валидности переданных
+ * параметров и генерирует исключения типа \Exception. В то время как библиотека дотзеро генерирует исключения
+ * связанные с ошибками при работе с AmoCRM и генерирует исключения типа AmoCRM\Exception. Обратите внимание на эту
+ * особенность при написании блока catch.
  */
 
 namespace CleverLab\AmoCRM;
@@ -27,10 +35,10 @@ class Middleware implements iMiddleware
     /**
      * Middleware constructor.
      *
-     * @param string $domain
-     * @param string $login
-     * @param string $apiKey
-     * @param string|null $proxy
+     * @param string $domain Домен или поддомен аккаунта
+     * @param string $login Логин пользователя AmoCRM
+     * @param string $apiKey API ключ, который можно взять в админ панели AmoCRM
+     * @param string|null $proxy Прокси сервер для отправки запроса
      */
     public function __construct($domain, $login, $apiKey, $proxy = null)
     {
@@ -41,11 +49,11 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Get account information.
-     * Equivalent to the method /private/api/v2/json/accounts/current
+     * Возвращает информацию по аккаунту.
+     * Эквивалентно методу /private/api/v2/json/accounts/current
      *
-     * @param bool $short
-     * @param array $parameters
+     * @param bool $short Краткий формат, только основные поля
+     * @param array $parameters Ассоциативный массив параметров к amoCRM API
      *
      * @return array
      */
@@ -59,9 +67,10 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Get user by login
+     * Возвращает сведения о пользователе по его логину.
+     * Если не указывать логин, вернутся сведения о владельце API ключа.
      *
-     * @param string $login
+     * @param string $login Логин пользователя
      *
      * @return mixed
      */
@@ -75,10 +84,11 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Get contact list. Equivalent to the method contacts/list
+     * Возвращает список контактов.
+     * Эквивалентно методу contacts/list
      *
-     * @param array $parameters
-     * @param null|string $modified
+     * @param array $parameters Ассоциативный массив параметров
+     * @param null|string $modified Дополнительная фильтрация по (изменено с)
      *
      * @return array
      */
@@ -88,10 +98,10 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Add one contact
+     * Добавляет контакт
      *
-     * @param array $parameters
-     * @param bool $debug
+     * @param array $parameters Ассоциативный массив параметров
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return int
      */
@@ -101,10 +111,10 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Add group of contacts
+     * Групповое добавление контактов
      *
-     * @param array $dataList
-     * @param bool $debug
+     * @param array $dataList Список массивов содержащих параметры
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return array
      */
@@ -114,12 +124,12 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Update contact
+     * Обновляет контакт
      *
-     * @param int $id
-     * @param array $parameters
-     * @param string $modified
-     * @param bool $debug
+     * @param int $id Идентификатор контакта
+     * @param array $parameters Ассоциативный массив параметров
+     * @param string $modified Дополнительная фильтрация по (изменено с)
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return bool
      */
@@ -129,9 +139,9 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Get links between leads and contacts
+     * Возвращает связи между сделками и контактами
      *
-     * @param array $parameters
+     * @param array $parameters Ассоциативный массив параметров
      *
      * @return array
      * @throws \Exception
@@ -150,10 +160,11 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Get lead list. Equivalent to the method leads/list
+     * Возвращает список сделок
+     * Эквивалентно методу leads/list
      *
-     * @param array $parameters
-     * @param null|string $modified
+     * @param array $parameters Ассоциативный массив параметров
+     * @param null|string $modified Дополнительная фильтрация по (изменено с)
      *
      * @return array
      */
@@ -163,10 +174,10 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Add one lead
+     * Добавляет сделку
      *
-     * @param array $parameters
-     * @param bool $debug
+     * @param array $parameters Ассоциативный массив параметров
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return int
      */
@@ -176,10 +187,10 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Add group of leads
+     * Групповое добавление сделок
      *
-     * @param array $dataList
-     * @param bool $debug
+     * @param array $dataList Список массивов содержащих параметры
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return array
      */
@@ -189,12 +200,12 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Update lead
+     * Обновляет сделку
      *
-     * @param int $id
-     * @param array $parameters
-     * @param string $modified
-     * @param bool $debug
+     * @param int $id Идентификатор сделки
+     * @param array $parameters Ассоциативный массив параметров
+     * @param string $modified Дополнительная фильтрация по (изменено с)
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return bool
      */
@@ -204,10 +215,11 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Get company list. Equivalent to the method company/list
+     * Возвращает список компаний.
+     * Эквивалентно методу company/list
      *
-     * @param array $parameters
-     * @param null|string $modified
+     * @param array $parameters Ассоциативный массив параметров
+     * @param null|string $modified Дополнительная фильтрация по (изменено с)
      *
      * @return array
      */
@@ -217,10 +229,10 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Add one company
+     * Добавляет компанию
      *
-     * @param array $parameters
-     * @param bool $debug
+     * @param array $parameters Ассоциативный массив параметров
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return int
      */
@@ -230,10 +242,10 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Add group of companies
+     * Групповое добавление компаний
      *
-     * @param array $dataList
-     * @param bool $debug
+     * @param array $dataList Список массивов содержащих параметры
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return array
      */
@@ -243,12 +255,12 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Update company
+     * Обновляет компанию
      *
-     * @param int $id
-     * @param array $parameters
-     * @param string $modified
-     * @param bool $debug
+     * @param int $id Идентификатор компании
+     * @param array $parameters Ассоциативный массив параметров
+     * @param string $modified Дополнительная фильтрация по (изменено с)
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return bool
      */
@@ -258,10 +270,11 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Get customer list. Equivalent to the method customers/list
+     * Возвращает список покупателей.
+     * Эквивалентно customers/list
      *
-     * @param array $parameters
-     * @param null|string $modified
+     * @param array $parameters Ассоциативный массив параметров
+     * @param null|string $modified Дополнительная фильтрация по (изменено с)
      *
      * @return array
      */
@@ -271,10 +284,10 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Add one customer
+     * Добавляет покупателя
      *
-     * @param array $parameters
-     * @param bool $debug
+     * @param array $parameters Ассоциативный массив параметров
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return int
      */
@@ -284,10 +297,10 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Add group of companies
+     * Групповое добавление покупателей
      *
-     * @param array $dataList
-     * @param bool $debug
+     * @param array $dataList Список массивов содержащих параметры
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return array
      */
@@ -297,12 +310,12 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Update customer
+     * Обновляет покупателя
      *
-     * @param int $id
-     * @param array $parameters
-     * @param string $modified
-     * @param bool $debug
+     * @param int $id Идентификатор покупателя
+     * @param array $parameters Ассоциативный массив параметров
+     * @param string $modified Дополнительная фильтрация по (изменено с)
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return bool
      */
@@ -312,10 +325,11 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Get transaction list. Equivalent to the method transactions/list
+     * Возвращает список транзакций.
+     * Эквивалентно методу transactions/list
      *
-     * @param array $parameters
-     * @param null|string $modified
+     * @param array $parameters Ассоциативный массив параметров
+     * @param null|string $modified Дополнительная фильтрация по (изменено с)
      *
      * @return array
      */
@@ -327,8 +341,8 @@ class Middleware implements iMiddleware
     /**
      * Add one transaction
      *
-     * @param array $parameters
-     * @param bool $debug
+     * @param array $parameters Ассоциативный массив параметров
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return int
      */
@@ -340,8 +354,8 @@ class Middleware implements iMiddleware
     /**
      * Add group of transactions
      *
-     * @param array $dataList
-     * @param bool $debug
+     * @param array $dataList Список массивов содержащих параметры
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return array
      */
@@ -369,8 +383,8 @@ class Middleware implements iMiddleware
     /**
      * Get task list. Equivalent to the method tasks/list
      *
-     * @param array $parameters
-     * @param null|string $modified
+     * @param array $parameters Ассоциативный массив параметров
+     * @param null|string $modified Дополнительная фильтрация по (изменено с)
      *
      * @return array
      */
@@ -382,8 +396,8 @@ class Middleware implements iMiddleware
     /**
      * Add one task
      *
-     * @param array $parameters
-     * @param bool $debug
+     * @param array $parameters Ассоциативный массив параметров
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return int
      */
@@ -395,8 +409,8 @@ class Middleware implements iMiddleware
     /**
      * Add group of tasks
      *
-     * @param array $dataList
-     * @param bool $debug
+     * @param array $dataList Список массивов содержащих параметры
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return array
      */
@@ -408,10 +422,10 @@ class Middleware implements iMiddleware
     /**
      * Update task
      *
-     * @param int $id
-     * @param array $text
-     * @param string $modified
-     * @param bool $debug
+     * @param int $id Идентификатор задачи
+     * @param array $text Список массивов содержащих параметры
+     * @param string $modified Дополнительная фильтрация по (изменено с)
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return bool
      */
@@ -431,8 +445,8 @@ class Middleware implements iMiddleware
     /**
      * Get note list. Equivalent to the method notes/list
      *
-     * @param array $parameters
-     * @param null|string $modified
+     * @param array $parameters Ассоциативный массив параметров
+     * @param null|string $modified Дополнительная фильтрация по (изменено с)
      *
      * @return array
      */
@@ -444,8 +458,8 @@ class Middleware implements iMiddleware
     /**
      * Add one note
      *
-     * @param array $parameters
-     * @param bool $debug
+     * @param array $parameters Ассоциативный массив параметров
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return int
      */
@@ -457,8 +471,8 @@ class Middleware implements iMiddleware
     /**
      * Add group of notes
      *
-     * @param array $dataList
-     * @param bool $debug
+     * @param array $dataList Список массивов содержащих параметры
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return array
      */
@@ -470,10 +484,10 @@ class Middleware implements iMiddleware
     /**
      * Update note
      *
-     * @param int $id
-     * @param array $parameters
-     * @param string $modified
-     * @param bool $debug
+     * @param int $id Идентификатор примечания
+     * @param array $parameters Ассоциативный массив параметров
+     * @param string $modified Дополнительная фильтрация по (изменено с)
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return bool
      */
@@ -485,8 +499,8 @@ class Middleware implements iMiddleware
     /**
      * Add one custom field
      *
-     * @param array $parameters
-     * @param bool $debug
+     * @param array $parameters Ассоциативный массив параметров
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return int
      */
@@ -498,8 +512,8 @@ class Middleware implements iMiddleware
     /**
      * Add group of custom fields
      *
-     * @param array $dataList
-     * @param bool $debug
+     * @param array $dataList Список массивов содержащих параметры
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return array
      */
@@ -513,7 +527,7 @@ class Middleware implements iMiddleware
      *
      * @param int $id
      * @param string $origin
-     * @param bool $debug
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return bool
      */
@@ -533,7 +547,58 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Return object for work via library
+     * Добавляет один звонок. Эквивалентно методу /api/calls/add/
+     *
+     * @param string $code Уникальный идентификатор сервиса
+     * @param string $key Ключ сервиса, который можно получить написав в техническую поддержку amoCRM
+     * @param array $parameters Ассоциативный массив параметров
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
+     *
+     * @return string
+     * @throws \Exception
+     */
+    public function addCall($code, $key, $parameters, $debug = false)
+    {
+        $call = $this->getCallObject($parameters, $debug);
+
+        $res = $call->apiAdd($code, $key);
+
+        return $res;
+    }
+
+    /**
+     * Добавляет звонки группой
+     *
+     * @param string $code Уникальный идентификатор сервиса
+     * @param string $key Ключ сервиса, который можно получить написав в техническую поддержку amoCRM
+     * @param array $dataList Список массивов содержащих параметры для звонков
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
+     *
+     * @return array|string
+     * @throws \Exception
+     */
+    public function addGroupOfCalls($code, $key, $dataList, $debug = false)
+    {
+        if (!is_array($dataList)) {
+            throw new \Exception('$dataList not valid. $dataList must be an array');
+        }
+
+        $arrOfCall = array();
+        foreach ($dataList as $k => $data) {
+            $call = $this->getCallObject($data, $debug);
+
+            if ($call) {
+                $arrOfCall[] = $call;
+            }
+        }
+
+        $res = $call->apiAdd($code, $key, $arrOfCall);
+
+        return $res;
+    }
+
+    /**
+     * Возвращает объект для работы с библиотекой
      *
      * @return Client
      */
@@ -547,10 +612,11 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Get object list
+     * Возвращает список объектов указанного типа
      *
-     * @param array $parameters
-     * @param null|string $modified
+     * @param string $type Тип объекта
+     * @param array $parameters Массив параметров для выборки объектов
+     * @param null|string $modified Дополнительная фильтрация по (изменено с)
      *
      * @return array
      * @throws \Exception
@@ -569,11 +635,11 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Add one object
+     * Добавляет один объект указанного типа
      *
-     * @param string $type
-     * @param array $parameters
-     * @param bool $debug
+     * @param string $type Тип объекта
+     * @param array $parameters Ассоциативный массив параметров для объекта
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return int
      */
@@ -594,11 +660,11 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Add group of objects
+     * Добавляет группу объектов указанного типа
      *
      * @param string $type
      * @param array $dataList
-     * @param bool $debug
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return array
      * @throws \Exception
@@ -640,13 +706,13 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Update object
+     * Обновляет объект
      *
      * @param string $type
      * @param int $id
      * @param array $parameters
-     * @param string $modified
-     * @param bool $debug
+     * @param string $modified Дополнительная фильтрация по (изменено с)
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return bool
      */
@@ -667,10 +733,61 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Set parameters for object
+     * Возвращает \AmoCRM\Models\Call объект
      *
-     * @param object $object
-     * @param array $parameters
+     * @param $parameters
+     * @param $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
+     *
+     * @return \AmoCRM\Models\Call
+     * @throws \Exception
+     */
+    private function getCallObject($parameters, $debug)
+    {
+        $amo = $this->getAmo();
+
+        $call = $amo->call;
+
+        if ($debug) {
+            $call->debug(true);
+        }
+
+        $requiredFields = array(
+            'account_id',
+            'uuid',
+            'caller',
+            'to',
+            'date',
+            'type',
+            'billsec',
+        );
+
+        $allowFields = array('link');
+
+        foreach ($parameters as $k => $v) {
+            if (
+                !in_array($k, $requiredFields) &&
+                !in_array($k, $allowFields)
+            ) {
+                unset($parameters[$k]);
+            }
+        }
+
+        foreach ($requiredFields as $k => $v) {
+            if (!array_key_exists($k, $parameters)) {
+                throw new \Exception('You must set "' . $k . '" parameter');
+            }
+        }
+
+        $this->setParameters($call, $parameters);
+
+        return $call;
+    }
+
+    /**
+     * Устанавливает параметры в объект
+     *
+     * @param object $object Объект для установки в него параметров
+     * @param array $parameters Ассоциативный массив параметров
      *
      * @throws \Exception
      */
@@ -690,10 +807,10 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Add custom field to object
+     * Устанавливает дополнительные поля в объект
      *
-     * @param object $object
-     * @param array $customFields
+     * @param object $object Объект для установки ему дополнительных полей
+     * @param array $customFields Массив параметров дополнительных полей
      *
      * @throws \Exception
      */

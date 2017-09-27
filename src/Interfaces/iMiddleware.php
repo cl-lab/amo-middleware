@@ -384,4 +384,49 @@ interface iMiddleware
      * @return array Массив уникальных идентификаторов звонков
      */
     public function addGroupOfCalls($code, $key, $dataList, $debug = false);
+
+    /**
+     * Возвращает список неразобранного
+     *
+     * @link https://developers.amocrm.ru/rest_api/unsorted/list.php
+     *
+     * @param array $parameters Массив параметров для выборки объектов
+     *
+     * @return array Ответ amoCRM API
+     */
+    public function getUnsorted($parameters = array());
+
+    /**
+     * Метод для принятия неразобранных заявок
+     *
+     * @link https://developers.amocrm.ru/rest_api/unsorted/accept.php
+     *
+     * @param string|array $uids Массив uid-ов неразобранных заявок или uid заявки
+     * @param int $userId id пользователя аккаунта, от имени которого будут созданы сделки/контакты/компании
+     * @param null|int $statusId Статус сделок, которые будут созданы в результате принятия неразобранного
+     *
+     * @return array Ответ amoCRM API
+     */
+    public function acceptUnsorted($uids, $userId, $statusId = null);
+
+    /**
+     * Отклонение неразобранных заявок
+     *
+     * @link https://developers.amocrm.ru/rest_api/unsorted/decline.php
+     *
+     * @param string|array $uids Массив uid-ов неразобранных заявок или uid заявки
+     * @param int $userId id пользователя аккаунта, от имени которого будут созданы сделки/контакты/компании
+     *
+     * @return array Ответ amoCRM API
+     */
+    public function declineUnsorted($uids, $userId);
+
+    /**
+     * Агрегирование неразобранных заявок
+     *
+     * @link https://developers.amocrm.ru/rest_api/unsorted/get_all_summary.php
+     *
+     * @return array Ответ amoCRM API
+     */
+    public function summaryUnsorted();
 }

@@ -599,6 +599,85 @@ class Middleware implements iMiddleware
     }
 
     /**
+     * Возвращает список неразобранного.
+     * Эквивалентно методу /api/unsorted/list/
+     *
+     * @link https://developers.amocrm.ru/rest_api/unsorted/list.php
+     *
+     * @param array $parameters Массив параметров для выборки объектов
+     *
+     * @return array Ответ amoCRM API
+     */
+    public function getUnsorted($parameters = array())
+    {
+        $allowFields = array(
+            'page_size',
+            'PAGEN_1',
+            'categories',
+            'order_by',
+        );
+
+        $this->removeNotAllowKey($parameters, $allowFields);
+
+        $amo = $this->getAmo();
+
+        return $amo->unsorted->apiList($parameters);
+    }
+
+    /**
+     * Метод для принятия неразобранных заявок
+     *
+     * @link https://developers.amocrm.ru/rest_api/unsorted/accept.php
+     *
+     * @param string|array $uids Массив uid-ов неразобранных заявок или uid заявки
+     * @param int $userId id пользователя аккаунта, от имени которого будут созданы сделки/контакты/компании
+     * @param null|int $statusId Статус сделок, которые будут созданы в результате принятия неразобранного
+     *
+     * @return array Ответ amoCRM API
+     */
+    public function acceptUnsorted($uids, $userId, $statusId = null)
+    {
+        $amo = $this->getAmo();
+
+        $res = $amo->unsorted->apiAccept($uids, $userId);
+
+        return $res;
+    }
+
+    /**
+     * Отклонение неразобранных заявок
+     *
+     * @link https://developers.amocrm.ru/rest_api/unsorted/decline.php
+     *
+     * @param string|array $uids Массив uid-ов неразобранных заявок или uid заявки
+     * @param int $userId id пользователя аккаунта, от имени которого будут созданы сделки/контакты/компании
+     *
+     * @return array Ответ amoCRM API
+     */
+    public function declineUnsorted($uids, $userId)
+    {
+        $amo = $this->getAmo();
+
+        $res = $amo->unsorted->apiDecline($uids, $userId);
+
+        return $res;
+    }
+
+    /**
+     * Агрегирование неразобранных заявок
+     *
+     * @link https://developers.amocrm.ru/rest_api/unsorted/get_all_summary.php
+     *
+     * @return array Ответ amoCRM API
+     */
+    public function summaryUnsorted()
+    {
+        $amo = $this->getAmo();
+
+        return $amo->unsorted->apiGetAllSummary();
+    }
+
+    /**
      * Возвращает объект для работы с библиотекой
      *
      * @return Client
@@ -731,6 +810,30 @@ class Middleware implements iMiddleware
         $res = $object->apiUpdate((int)$id, $modified);
 
         return $res;
+    }
+
+    /**
+     * Удаляет недопустимые ключи из массива
+     *
+     * @param array $array Обрабатываемый массив
+     * @param array $allowKeys Массив допустимыч ключей
+     *
+     * @throws \Exception
+     */
+    private function removeNotAllowKey(&$array, $allowKeys)
+    {
+        if (!is_array($array)) {
+            throw new \Exception('$array not valid. $array must be an array');
+        }
+        if (!is_array($allowKeys)) {
+            throw new \Exception('$allowKeys not valid. $allowKeys must be an array');
+        }
+
+        foreach ($array as $k => $v) {
+            if (!in_array($k, $allowKeys)) {
+                unset($array[$k]);
+            }
+        }
     }
 
     /**

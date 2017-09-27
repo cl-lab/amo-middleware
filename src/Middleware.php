@@ -31,6 +31,12 @@ class Middleware implements iMiddleware
 
     private $amo = null;
 
+    private static $unsortedRequireFields = array(
+        'source', // Название источника заявки
+        'source_uid', // Уникальный идентификатор заявки
+        'source_data', // Данные заявки (зависят от категории)
+    );
+
     /**
      * Middleware constructor.
      *
@@ -617,7 +623,7 @@ class Middleware implements iMiddleware
             'order_by',
         );
 
-        $this->removeNotAllowKey($parameters, $allowFields);
+        $this->removeNotAllowKeys($parameters, $allowFields);
 
         $amo = $this->getAmo();
 
@@ -675,6 +681,218 @@ class Middleware implements iMiddleware
         $amo = $this->getAmo();
 
         return $amo->unsorted->apiGetAllSummary();
+    }
+
+    /**
+     * Добавление неразобранной заявки с примечанием из Письма.
+     * Не предусматривает группового добавления
+     *
+     * @param array $unsortedParameters Массив параметров для неразобранного
+     * @param array $leadParameters Массив параметров для сделки
+     * @param array $noteParameters Массив параметров для примечания
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
+     *
+     * @return int Уникальный идентификатор заявки
+     */
+    public function addMailUnsortedToLead(
+        $unsortedParameters,
+        $leadParameters = array(),
+        $noteParameters = array(),
+        $debug = false
+    ) {
+        $this->removeNotAllowKeys(
+            $unsortedParameters,
+            array_merge(self::$unsortedRequireFields, array('date_create'))
+        );
+        $this->checkRequiredKeys($unsortedParameters, self::$unsortedRequireFields);
+
+        $amo = $this->getAmo();
+
+        $unsorted = $amo->unsorted;
+        if ($debug) {
+            $unsorted->debug(true);
+        }
+        $this->setParameters($unsorted, $unsortedParameters);
+
+        if ($leadParameters) {
+            // Сделка которая будет создана после одобрения заявки.
+            $lead = $amo->lead;
+            $this->setParameters($lead, $leadParameters);
+
+            if ($noteParameters) {
+                // Примечания, которые появятся в сделке после принятия неразобранного
+                $note = $amo->note;
+                $this->setParameters($note, $noteParameters);
+                $lead['notes'] = $note;
+            }
+
+            // Присоединение сделки к неразобранному
+            $unsorted->addDataLead($lead);
+        }
+
+        // Добавление неразобранной заявки с типом MAIL
+        $unsortedId = $unsorted->apiAddMail();
+
+        return $unsortedId;
+    }
+
+    /**
+     * Добавление неразобранного контакта с примечанием из Письма.
+     * Не предусматривает группового добавления
+     *
+     * @param array $unsortedParameters Массив параметров для неразобранного
+     * @param array $contactParameters Массив параметров для контакта
+     * @param array $noteParameters Массив параметров для примечания
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
+     *
+     * @return int Уникальный идентификатор заявки
+     */
+    public function addMailUnsortedToContact(
+        $unsortedParameters,
+        $contactParameters = array(),
+        $noteParameters = array(),
+        $debug = false
+    ) {
+        $this->removeNotAllowKeys(
+            $unsortedParameters,
+            array_merge(self::$unsortedRequireFields, array('date_create'))
+        );
+        $this->checkRequiredKeys($unsortedParameters, self::$unsortedRequireFields);
+
+        $amo = $this->getAmo();
+
+        $unsorted = $amo->unsorted;
+        if ($debug) {
+            $unsorted->debug(true);
+        }
+        $this->setParameters($unsorted, $unsortedParameters);
+
+        if ($contactParameters) {
+            // Добавление контакта или компании которая будет создана после одобрения заявки.
+            $contact = $amo->contact;
+            $this->setParameters($contact, $contactParameters);
+
+            if ($noteParameters) {
+                // Примечания, которые появятся в сделке после принятия неразобранного
+                $note = $amo->note;
+                $this->setParameters($note, $noteParameters);
+                $contact['notes'] = $note;
+            }
+
+            // Присоединение контакта к неразобранному
+            $unsorted->addDataContact($contact);
+        }
+
+        // Добавление неразобранной заявки с типом MAIL
+        $unsortedId = $unsorted->apiAddMail();
+
+        return $unsortedId;
+    }
+
+    /**
+     * Добавление неразобранной заявки с примечанием из Формы.
+     * Не предусматривает группового добавления
+     *
+     * @param array $unsortedParameters Массив параметров для неразобранного
+     * @param array $leadParameters Массив параметров для сделки
+     * @param array $noteParameters Массив параметров для примечания
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
+     *
+     * @return int Уникальный идентификатор заявки
+     */
+    public function addFormUnsortedToLead(
+        $unsortedParameters,
+        $leadParameters = array(),
+        $noteParameters = array(),
+        $debug = false
+    ) {
+        $this->removeNotAllowKeys(
+            $unsortedParameters,
+            array_merge(self::$unsortedRequireFields, array('date_create'))
+        );
+        $this->checkRequiredKeys($unsortedParameters, self::$unsortedRequireFields);
+
+        $amo = $this->getAmo();
+
+        $unsorted = $amo->unsorted;
+        if ($debug) {
+            $unsorted->debug(true);
+        }
+        $this->setParameters($unsorted, $unsortedParameters);
+
+        if ($leadParameters) {
+            // Сделка которая будет создана после одобрения заявки.
+            $lead = $amo->lead;
+            $this->setParameters($lead, $leadParameters);
+
+            if ($noteParameters) {
+                // Примечания, которые появятся в сделке после принятия неразобранного
+                $note = $amo->note;
+                $this->setParameters($note, $noteParameters);
+                $lead['notes'] = $note;
+            }
+
+            // Присоединение сделки к неразобранному
+            $unsorted->addDataLead($lead);
+        }
+
+        // Добавление неразобранной заявки с типом FORMS
+        $unsortedId = $unsorted->apiAddForms();
+
+        return $unsortedId;
+    }
+
+    /**
+     * Добавление неразобранного контакта с примечанием из Формы.
+     * Не предусматривает группового добавления
+     *
+     * @param array $unsortedParameters Массив параметров для неразобранного
+     * @param array $contactParameters Массив параметров для контакта
+     * @param array $noteParameters Массив параметров для примечания
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
+     *
+     * @return int Уникальный идентификатор заявки
+     */
+    public function addFormUnsortedToContact(
+        $unsortedParameters,
+        $contactParameters = array(),
+        $noteParameters = array(),
+        $debug = false
+    ) {
+        $this->removeNotAllowKeys(
+            $unsortedParameters,
+            array_merge(self::$unsortedRequireFields, array('date_create'))
+        );
+        $this->checkRequiredKeys($unsortedParameters, self::$unsortedRequireFields);
+
+        $amo = $this->getAmo();
+
+        $unsorted = $amo->unsorted;
+        if ($debug) {
+            $unsorted->debug(true);
+        }
+        $this->setParameters($unsorted, $unsortedParameters);
+
+        if ($contactParameters) {
+            // Добавление контакта или компании которая будет создана после одобрения заявки.
+            $contact = $amo->contact;
+            $this->setParameters($contact, $contactParameters);
+
+            if ($noteParameters) {
+                // Примечания, которые появятся в сделке после принятия неразобранного
+                $note = $amo->note;
+                $this->setParameters($note, $noteParameters);
+                $contact['notes'] = $note;
+            }
+
+            // Присоединение контакта к неразобранному
+            $unsorted->addDataContact($contact);
+        }
+
+        // Добавление неразобранной заявки с типом FORMS
+        $unsortedId = $unsorted->apiAddForms();
+
+        return $unsortedId;
     }
 
     /**
@@ -813,6 +1031,23 @@ class Middleware implements iMiddleware
     }
 
     /**
+     * Проверяет наличие в массиве обязательных ключей
+     *
+     * @param array $array Обрабатываемый массив
+     * @param $requiredKeys Массив обязательных параметров
+     *
+     * @throws \Exception
+     */
+    private function checkRequiredKeys($array, $requiredKeys)
+    {
+        foreach ($requiredKeys as $k => $v) {
+            if (!array_key_exists($k, $array)) {
+                throw new \Exception('You must set "' . $k . '" parameter');
+            }
+        }
+    }
+
+    /**
      * Удаляет недопустимые ключи из массива
      *
      * @param array $array Обрабатываемый массив
@@ -820,7 +1055,7 @@ class Middleware implements iMiddleware
      *
      * @throws \Exception
      */
-    private function removeNotAllowKey(&$array, $allowKeys)
+    private function removeNotAllowKeys(&$array, $allowKeys)
     {
         if (!is_array($array)) {
             throw new \Exception('$array not valid. $array must be an array');
@@ -865,22 +1100,12 @@ class Middleware implements iMiddleware
             'billsec',
         );
 
-        $allowFields = array('link');
+        $this->removeNotAllowKeys(
+            $parameters,
+            array_merge($requiredFields, array('link'))
+        );
 
-        foreach ($parameters as $k => $v) {
-            if (
-                !in_array($k, $requiredFields) &&
-                !in_array($k, $allowFields)
-            ) {
-                unset($parameters[$k]);
-            }
-        }
-
-        foreach ($requiredFields as $k => $v) {
-            if (!array_key_exists($k, $parameters)) {
-                throw new \Exception('You must set "' . $k . '" parameter');
-            }
-        }
+        $this->checkRequiredKeys($parameters, $requiredFields);
 
         $this->setParameters($call, $parameters);
 

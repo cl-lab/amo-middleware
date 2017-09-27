@@ -133,7 +133,7 @@ class Middleware implements iMiddleware
      *
      * @param int $id Идентификатор контакта
      * @param array $parameters Ассоциативный массив параметров
-     * @param string $modified Дополнительная фильтрация по (изменено с)
+     * @param string $modified Дата последнего изменения данной сущности
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return bool Флаг успешности выполнения запроса
@@ -209,7 +209,7 @@ class Middleware implements iMiddleware
      *
      * @param int $id Идентификатор сделки
      * @param array $parameters Ассоциативный массив параметров
-     * @param string $modified Дополнительная фильтрация по (изменено с)
+     * @param string $modified Дата последнего изменения данной сущности
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return bool Флаг успешности выполнения запроса
@@ -264,7 +264,7 @@ class Middleware implements iMiddleware
      *
      * @param int $id Идентификатор компании
      * @param array $parameters Ассоциативный массив параметров
-     * @param string $modified Дополнительная фильтрация по (изменено с)
+     * @param string $modified Дата последнего изменения данной сущности
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return bool Флаг успешности выполнения запроса
@@ -319,14 +319,13 @@ class Middleware implements iMiddleware
      *
      * @param int $id Идентификатор покупателя
      * @param array $parameters Ассоциативный массив параметров
-     * @param string $modified Дополнительная фильтрация по (изменено с)
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return bool Флаг успешности выполнения запроса
      */
-    public function updateCustomer($id, $parameters, $modified = 'now', $debug = false)
+    public function updateCustomer($id, $parameters, $debug = false)
     {
-        return $this->updateObject('customer', $id, $parameters, $modified, $debug);
+        return $this->updateObject('customer', $id, $parameters, null, $debug);
     }
 
     /**
@@ -493,7 +492,7 @@ class Middleware implements iMiddleware
      *
      * @param int $id Идентификатор примечания
      * @param array $parameters Ассоциативный массив параметров
-     * @param string $modified Дополнительная фильтрация по (изменено с)
+     * @param string $modified Дата последнего изменения данной сущности
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return bool Флаг успешности выполнения запроса
@@ -946,6 +945,84 @@ class Middleware implements iMiddleware
     }
 
     /**
+     * Список воронок и этапов продаж
+     *
+     * @link https://developers.amocrm.ru/rest_api/pipelines/list.php
+     *
+     * @param null|int $id Уникальный идентификатор воронки
+     *
+     * @return array Ответ amoCRM API
+     */
+    public function getPipelines($id = null)
+    {
+        $amo = $this->getAmo();
+
+        return $amo->pipelines->apiList($id);
+    }
+
+    /**
+     * Добавляет этап
+     *
+     * @param array $parameters Ассоциативный массив параметров
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
+     *
+     * @return int Уникальный идентификатор покупателя
+     */
+    public function addPipeline($parameters, $debug = false)
+    {
+        return $this->addObject('pipelines', $parameters, $debug);
+    }
+
+    /**
+     * Групповое добавление этапов
+     *
+     * @param array $dataList Список массивов содержащих параметры
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
+     *
+     * @return array Массив уникальных идентификаторов покупателей
+     */
+    public function addGroupOfPipelines($dataList, $debug = false)
+    {
+        return $this->addGroupOfObject('pipelines', $dataList, $debug);
+    }
+
+    /**
+     * Обновление воронок и этапов продаж
+     *
+     * @param int $id Идентификатор этапа(воронки)
+     * @param array $parameters Ассоциативный массив параметров
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
+     *
+     * @return bool Флаг успешности выполнения запроса
+     */
+    public function updatePipeline($id, $parameters, $debug = false)
+    {
+        return $this->updateObject('pipelines', $id, $parameters, null, $debug);
+    }
+
+    /**
+     * Удаление воронок
+     *
+     * Удаление последней воронки в аккаунте невозможно,
+     * при удалении последней воронки выдается ошибка
+     * "Impossible to delete last pipeline"
+     *
+     * @link https://developers.amocrm.ru/rest_api/pipelines/delete.php
+     *
+     * @param int $id Уникальный идентификатор воронки
+     *
+     * @return array Ответ amoCRM API
+     */
+    public function deletePipeline($id)
+    {
+        $amo = $this->getAmo();
+
+        $res = $amo->pipelines->apiDelete((int)$id);
+
+        return $res;
+    }
+
+    /**
      * Возвращает объект для работы с библиотекой
      *
      * @return Client
@@ -1059,12 +1136,12 @@ class Middleware implements iMiddleware
      * @param string $type
      * @param int $id
      * @param array $parameters
-     * @param string $modified Дополнительная фильтрация по (изменено с)
+     * @param string $modified Дата последнего изменения данной сущности
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return bool
      */
-    private function updateObject($type, $id, $parameters, $modified = 'now', $debug = false)
+    private function updateObject($type, $id, $parameters, $modified = null, $debug = false)
     {
         $amo = $this->getAmo();
         $object = $amo->{$type};
@@ -1075,7 +1152,11 @@ class Middleware implements iMiddleware
 
         $this->setParameters($object, $parameters);
 
-        $res = $object->apiUpdate((int)$id, $modified);
+        if ($modified) {
+            $res = $object->apiUpdate((int)$id, $modified);
+        } else {
+            $res = $object->apiUpdate((int)$id);
+        }
 
         return $res;
     }
@@ -1177,10 +1258,26 @@ class Middleware implements iMiddleware
         }
 
         foreach ($parameters as $k => $v) {
-            if ('custom_fields' == $k) {
-                $this->addCustomFields($object, $v);
-            } else {
-                $object[$k] = $v;
+            switch ($k) {
+                case 'custom_fields':
+                    $this->addCustomFields($object, $v);
+                    break;
+                case 'statuses_fields':
+                    $statusesData = &$v;
+                    foreach ($statusesData as $data) {
+                        $this->checkRequiredKeys($data, array('parameters'));
+                        $id = null;
+                        if (array_key_exists('id', $data) && (int)$data['id']) {
+                            $id = (int)$data['id'];
+                        }
+                        $object->addStatusField(
+                            $data['parameters'],
+                            $id
+                        );
+                    }
+                    break;
+                default:
+                    $object[$k] = $v;
             }
         }
     }

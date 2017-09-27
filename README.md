@@ -10,7 +10,7 @@ $ composer require cl-lab/amo-middleware
 
 ## Использование
 
-Для использования обёртки пропешите в файле:
+Для использования обёртки пропишите в файле:
 use CleverLab\AmoCRM\<ClassName>
 
 ## Соглашения

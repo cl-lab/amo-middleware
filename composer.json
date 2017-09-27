@@ -2,7 +2,7 @@
     "name": "cl-lab/amo-middleware",
     "description": "Обёртка для библиотек работающих с API AmoCRM",
     "license": "MIT",
-    "type": "package",
+    "type": "library",
     "keywords": ["amocrm", "crm", "api", "middleware"],
     "authors": [
         {

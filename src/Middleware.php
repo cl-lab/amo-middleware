@@ -896,6 +896,56 @@ class Middleware implements iMiddleware
     }
 
     /**
+     * Список Webhooks
+     *
+     * @link https://developers.amocrm.ru/rest_api/webhooks/list.php
+     *
+     * @return array Ответ amoCRM API
+     */
+    public function getWebhooks()
+    {
+        $amo = $this->getAmo();
+
+        return $amo->webhooks->apiList();
+    }
+
+    /**
+     * Добавление Webhooks.
+     * Добавляет хук на одно событие или группу событий
+     *
+     * @link https://developers.amocrm.ru/rest_api/webhooks/subscribe.php
+     *
+     * @param null|string $url URL на который необходимо присылать уведомления, должен соответствовать стандарту RFC 2396
+     * @param array|string $events Список событий, при которых должны отправляться Webhooks
+     *
+     * @return array|false Ответ amoCRM API
+     */
+    public function webhooksSubscribe($url = null, $events = array())
+    {
+        $amo = $this->getAmo();
+
+        return $amo->webhooks->apiSubscribe($url, $events);
+    }
+
+    /**
+     * Удаления Webhooks.
+     * Удаляет хук на одно событие или группу событий
+     *
+     * @link https://developers.amocrm.ru/rest_api/webhooks/unsubscribe.php
+     *
+     * @param null|string $url URL на который необходимо присылать уведомления, должен соответствовать стандарту RFC 2396
+     * @param array|string $events Список событий, при которых должны отправляться Webhooks
+     *
+     * @return array|false Ответ amoCRM API
+     */
+    public function webhooksUnsubscribe($url = null, $events = array())
+    {
+        $amo = $this->getAmo();
+
+        return $amo->webhooks->apiUnsubscribe($url, $events);
+    }
+
+    /**
      * Возвращает объект для работы с библиотекой
      *
      * @return Client

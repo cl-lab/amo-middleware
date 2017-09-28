@@ -654,6 +654,8 @@ interface iMiddleware
     /**
      * Добавляет каталог
      *
+     * link https://developers.amocrm.ru/rest_api/catalogs/set.php
+     *
      * @param array $parameters Ассоциативный массив параметров
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
@@ -663,6 +665,8 @@ interface iMiddleware
 
     /**
      * Групповое добавление каталогов
+     *
+     * @link https://developers.amocrm.ru/rest_api/catalogs/set.php
      *
      * @param array $dataList Список массивов содержащих параметры
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
@@ -674,6 +678,8 @@ interface iMiddleware
     /**
      * Обновляет каталог
      *
+     * @link https://developers.amocrm.ru/rest_api/catalogs/set.php
+     *
      * @param int $id Идентификатор каталога
      * @param array $parameters Ассоциативный массив параметров
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
@@ -681,4 +687,74 @@ interface iMiddleware
      * @return bool Флаг успешности выполнения запроса
      */
     public function updateCatalog($id, $parameters, $debug = false);
+
+    /**
+     * Удаляет каталог
+     *
+     * @link https://developers.amocrm.ru/rest_api/catalogs/set.php
+     *
+     * @param int $id Идентификатор каталога
+     *
+     * @return bool Флаг успешности выполнения запроса
+     */
+    public function deleteCatalog($id);
+
+    /**
+     * Возвращает список элементов каталога.
+     *
+     * @link https://developers.amocrm.ru/rest_api/catalog_elements/list.php
+     *
+     * @param array $parameters Ассоциативный массив параметров
+     *
+     * @return array Ответ amoCRM API
+     */
+    public function getCatalogElements($parameters = array());
+
+    /**
+     * Добавляет элемент каталога
+     *
+     * @link https://developers.amocrm.ru/rest_api/catalog_elements/set.php
+     *
+     * @param array $parameters Ассоциативный массив параметров
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
+     *
+     * @return int Уникальный идентификатор контакта
+     */
+    public function addCatalogElement($parameters, $debug = false);
+
+    /**
+     * Групповое добавление элементов каталога
+     *
+     * @link https://developers.amocrm.ru/rest_api/catalog_elements/set.php
+     *
+     * @param array $dataList Список массивов содержащих параметры
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
+     *
+     * @return array Массив уникальных идентификаторов контактов
+     */
+    public function addGroupOfCatalogElements($dataList, $debug = false);
+
+    /**
+     * Обновляет элемента каталога
+     *
+     * @link https://developers.amocrm.ru/rest_api/catalog_elements/set.php
+     *
+     * @param int $id Идентификатор контакта
+     * @param array $parameters Ассоциативный массив параметров
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
+     *
+     * @return bool Флаг успешности выполнения запроса
+     */
+    public function updateCatalogElement($id, $parameters, $debug = false);
+
+    /**
+     * Удаляет элемент каталога
+     *
+     * @link https://developers.amocrm.ru/rest_api/catalog_elements/set.php
+     *
+     * @param int $id Идентификатор элемента каталога
+     *
+     * @return bool Флаг успешности выполнения запроса
+     */
+    public function deleteCatalogElement($id);
 }

@@ -66,9 +66,7 @@ class Middleware implements iMiddleware
     {
         $amo = $this->getAmo();
 
-        $res = $amo->account->apiCurrent($short, $parameters);
-
-        return $res;
+        return $amo->account->apiCurrent($short, $parameters);
     }
 
     /**
@@ -83,9 +81,7 @@ class Middleware implements iMiddleware
     {
         $amo = $this->getAmo();
 
-        $res = $amo->account->getUserByLogin($login);
-
-        return $res;
+        return $amo->account->getUserByLogin($login);
     }
 
     /**
@@ -159,9 +155,7 @@ class Middleware implements iMiddleware
 
         $amo = $this->getAmo();
 
-        $res = $amo->contact->apiLinks($parameters);
-
-        return $res;
+        return $amo->contact->apiLinks($parameters);
     }
 
     /**
@@ -379,9 +373,7 @@ class Middleware implements iMiddleware
     {
         $amo = $this->getAmo();
 
-        $res = $amo->transaction->apiDelete((int)$id);
-
-        return $res;
+        return $amo->transaction->apiDelete((int)$id);
     }
 
     /**
@@ -547,9 +539,7 @@ class Middleware implements iMiddleware
             $field->debug(true);
         }
 
-        $res = $field->apiDelete($id, $origin);
-
-        return $res;
+        return $field->apiDelete($id, $origin);
     }
 
     /**
@@ -567,9 +557,7 @@ class Middleware implements iMiddleware
     {
         $call = $this->getCallObject($parameters, $debug);
 
-        $res = $call->apiAdd($code, $key);
-
-        return $res;
+        return $call->apiAdd($code, $key);
     }
 
     /**
@@ -598,9 +586,7 @@ class Middleware implements iMiddleware
             }
         }
 
-        $res = $call->apiAdd($code, $key, $arrOfCall);
-
-        return $res;
+        return $call->apiAdd($code, $key, $arrOfCall);
     }
 
     /**
@@ -644,9 +630,7 @@ class Middleware implements iMiddleware
     {
         $amo = $this->getAmo();
 
-        $res = $amo->unsorted->apiAccept($uids, $userId);
-
-        return $res;
+        return $amo->unsorted->apiAccept($uids, $userId);
     }
 
     /**
@@ -663,9 +647,7 @@ class Middleware implements iMiddleware
     {
         $amo = $this->getAmo();
 
-        $res = $amo->unsorted->apiDecline($uids, $userId);
-
-        return $res;
+        return $amo->unsorted->apiDecline($uids, $userId);
     }
 
     /**
@@ -1017,9 +999,7 @@ class Middleware implements iMiddleware
     {
         $amo = $this->getAmo();
 
-        $res = $amo->pipelines->apiDelete((int)$id);
-
-        return $res;
+        return $amo->pipelines->apiDelete((int)$id);
     }
 
     /**
@@ -1169,6 +1149,82 @@ class Middleware implements iMiddleware
     }
 
     /**
+     * Список каталогов
+     *
+     * @link https://developers.amocrm.ru/rest_api/catalogs/list.php
+     *
+     * @param null|int $id Идентификатор каталога
+     *
+     * @return array Ответ amoCRM API
+     */
+    public function getCatalogs($id = null)
+    {
+        $amo = $this->getAmo();
+
+        return $amo->catalog->apiList($id);
+    }
+
+    /**
+     * Добавляет каталог
+     *
+     * @param array $parameters Ассоциативный массив параметров
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
+     *
+     * @return int Уникальный идентификатор каталога
+     */
+    public function addCatalog($parameters, $debug = false)
+    {
+        return $this->addObject('catalog', $parameters, $debug);
+    }
+
+    /**
+     * Групповое добавление каталогов
+     *
+     * @param array $dataList Список массивов содержащих параметры
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
+     *
+     * @return array Массив уникальных идентификаторов каталогов
+     */
+    public function addGroupOfCatalogs($dataList, $debug = false)
+    {
+        return $this->addGroupOfObject('catalog', $dataList, $debug);
+    }
+
+    /**
+     * Обновляет каталог
+     *
+     * @param int $id Идентификатор каталога
+     * @param array $parameters Ассоциативный массив параметров
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
+     *
+     * @return bool Флаг успешности выполнения запроса
+     */
+    public function updateCatalog($id, $parameters, $debug = false)
+    {
+        $allowFields = array(
+            'name',
+        );
+
+        $this->removeNotAllowKeys($parameters, $allowFields);
+
+        return $this->updateObject('catalog', $id, $parameters, null, $debug);
+    }
+
+    /**
+     * Удаляет каталог
+     *
+     * @param int $id Идентификатор каталога
+     *
+     * @return bool Флаг успешности выполнения запроса
+     */
+    public function deleteCatalog($id)
+    {
+        $amo = $this->getAmo();
+
+        return $amo->catalog->apiDelete((int)$id);
+    }
+
+    /**
      * Возвращает объект для работы с библиотекой
      *
      * @return Client
@@ -1189,7 +1245,7 @@ class Middleware implements iMiddleware
      * @param array $parameters Массив параметров для выборки объектов
      * @param null|string $modified Дополнительная фильтрация по (изменено с)
      *
-     * @return array
+     * @return array Ответ amoCRM API
      * @throws \Exception
      */
     private function getObjects($type, $parameters, $modified = null)
@@ -1200,9 +1256,7 @@ class Middleware implements iMiddleware
 
         $amo = $this->getAmo();
 
-        $res = $amo->{$type}->apiList($parameters, $modified);
-
-        return $res;
+        return $amo->{$type}->apiList($parameters, $modified);
     }
 
     /**
@@ -1212,20 +1266,20 @@ class Middleware implements iMiddleware
      * @param array $parameters Ассоциативный массив параметров для объекта
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
-     * @return int
+     * @return int Идентификатор объекта
      */
     private function addObject($type, $parameters, $debug = false)
     {
         $amo = $this->getAmo();
-        $contact = $amo->{$type};
+        $object = $amo->{$type};
 
         if ($debug) {
-            $contact->debug(true);
+            $object->debug(true);
         }
 
-        $this->setParameters($contact, $parameters);
+        $this->setParameters($object, $parameters);
 
-        $id = $contact->apiAdd();
+        $id = $object->apiAdd();
 
         return $id;
     }

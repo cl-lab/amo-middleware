@@ -639,4 +639,46 @@ interface iMiddleware
      * @throws \Exception
      */
     public function widgetUninstall($parameters);
+
+    /**
+     * Список каталогов
+     *
+     * @link https://developers.amocrm.ru/rest_api/catalogs/list.php
+     *
+     * @param null|int $id Идентификатор каталога
+     *
+     * @return array Ответ amoCRM API
+     */
+    public function getCatalogs($id = null);
+
+    /**
+     * Добавляет каталог
+     *
+     * @param array $parameters Ассоциативный массив параметров
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
+     *
+     * @return int Уникальный идентификатор каталога
+     */
+    public function addCatalog($parameters, $debug = false);
+
+    /**
+     * Групповое добавление каталогов
+     *
+     * @param array $dataList Список массивов содержащих параметры
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
+     *
+     * @return array Массив уникальных идентификаторов каталогов
+     */
+    public function addGroupOfCatalogs($dataList, $debug = false);
+
+    /**
+     * Обновляет каталог
+     *
+     * @param int $id Идентификатор каталога
+     * @param array $parameters Ассоциативный массив параметров
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
+     *
+     * @return bool Флаг успешности выполнения запроса
+     */
+    public function updateCatalog($id, $parameters, $debug = false);
 }

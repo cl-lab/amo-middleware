@@ -11,7 +11,12 @@ $ composer require cl-lab/amo-middleware
 ## Использование
 
 Для использования обёртки пропишите в файле:
-use CleverLab\AmoCRM\<ClassName>
+
+use CleverLab\AmoCRM\Middleware;
+
+$amo = new Middleware('SUBDOMAIN', 'LOGIN', 'HASH');
+
+$result = $amo->getAccount();
 
 ## Соглашения
 

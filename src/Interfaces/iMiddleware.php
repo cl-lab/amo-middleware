@@ -669,7 +669,7 @@ interface iMiddleware
      *
      * @link https://developers.amocrm.ru/rest_api/customers_periods/set.php
      *
-     * @param $dataList Список массивов содержащих параметры
+     * @param array $dataList Список массивов содержащих параметры
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return array Массив уникальных идентификаторов
@@ -690,7 +690,7 @@ interface iMiddleware
     /**
      * Включение виджетов
      *
-     * @param $parameters Массив параметров для включения виджета
+     * @param array $parameters Массив параметров для включения виджета
      *
      * @link https://developers.amocrm.ru/rest_api/widgets/set.php
      *
@@ -701,7 +701,7 @@ interface iMiddleware
     /**
      * Выключение виджетов
      *
-     * @param $parameters Массив параметров для выключения виджета
+     * @param array $parameters Массив параметров для выключения виджета
      *
      * @link https://developers.amocrm.ru/rest_api/widgets/set.php
      *

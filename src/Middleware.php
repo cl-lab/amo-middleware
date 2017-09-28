@@ -635,8 +635,8 @@ class Middleware implements iMiddleware
      */
     public function addGroupOfCalls($code, $key, $dataList, $debug = false)
     {
-        if (!is_array($dataList)) {
-            throw new \Exception('$dataList not valid. $dataList must be an array');
+        if (!is_array($dataList) || !$dataList) {
+            throw new \Exception('$dataList not valid. $dataList must be not empty array');
         }
 
         $arrOfCall = array();
@@ -1098,7 +1098,7 @@ class Middleware implements iMiddleware
      *
      * @link https://developers.amocrm.ru/rest_api/customers_periods/set.php
      *
-     * @param $dataList Список массивов содержащих параметры
+     * @param array $dataList Список массивов содержащих параметры
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return array Массив уникальных идентификаторов
@@ -1106,8 +1106,8 @@ class Middleware implements iMiddleware
      */
     public function setCustomerPeriod($dataList, $debug = false)
     {
-        if (!is_array($dataList)) {
-            throw new \Exception('$dataList must be an array');
+        if (!is_array($dataList) || !$dataList) {
+            throw new \Exception('$dataList must be not empty array');
         }
 
         $arrOfPeriods = array();
@@ -1155,7 +1155,7 @@ class Middleware implements iMiddleware
     /**
      * Включение виджетов
      *
-     * @param $parameters Массив параметров для включения виджета
+     * @param array $parameters Массив параметров для включения виджета
      *
      * @link https://developers.amocrm.ru/rest_api/widgets/set.php
      *
@@ -1184,7 +1184,7 @@ class Middleware implements iMiddleware
     /**
      * Выключение виджетов
      *
-     * @param $parameters Массив параметров для выключения виджета
+     * @param array $parameters Массив параметров для выключения виджета
      *
      * @link https://developers.amocrm.ru/rest_api/widgets/set.php
      *
@@ -1450,14 +1450,14 @@ class Middleware implements iMiddleware
      */
     public function addGroupOfLinks($dataList, $debug = false)
     {
-        if (!is_array($dataList)) {
-            throw new \Exception('$dataList not valid. $dataList must be an array');
+        if (!is_array($dataList) || !$dataList) {
+            throw new \Exception('$dataList not valid. $dataList must be not empty array');
         }
 
         $arrOfLinks = array();
 
         foreach ($dataList as $k => $linkParameters) {
-            $arrOfLinks[] = getLinkObject($linkParameters, $debug);
+            $arrOfLinks[] = $this->getLinkObject($linkParameters, $debug);
         }
 
         return $this->getAmo()->links->apiLink($arrOfLinks);
@@ -1493,14 +1493,14 @@ class Middleware implements iMiddleware
      */
     public function deleteGroupOfLinks($dataList, $debug = false)
     {
-        if (!is_array($dataList)) {
-            throw new \Exception('$dataList not valid. $dataList must be an array');
+        if (!is_array($dataList) || !$dataList) {
+            throw new \Exception('$dataList not valid. $dataList must be not empty array');
         }
 
         $arrOfLinks = array();
 
         foreach ($dataList as $k => $linkParameters) {
-            $arrOfLinks[] = getLinkObject($linkParameters, $debug);
+            $arrOfLinks[] = $this->getLinkObject($linkParameters, $debug);
         }
 
         return $this->getAmo()->links->apiUnlink($arrOfLinks);
@@ -1514,7 +1514,7 @@ class Middleware implements iMiddleware
     private function getAmo()
     {
         if (!$this->amo) {
-            $amo = Client($this->domain, $this->login, $this->apiKey, $this->proxy);
+            $amo = new Client($this->domain, $this->login, $this->apiKey, $this->proxy);
         }
 
         return $amo;
@@ -1578,8 +1578,8 @@ class Middleware implements iMiddleware
      */
     private function addGroupOfObject($type, $dataList, $debug = false)
     {
-        if (!is_array($dataList)) {
-            throw new \Exception('$dataList not valid. $dataList must be an array');
+        if (!is_array($dataList) || !$dataList) {
+            throw new \Exception('$dataList not valid. $dataList must be not empty array');
         }
 
         $amo = $this->getAmo();
@@ -1647,7 +1647,7 @@ class Middleware implements iMiddleware
      * Проверяет наличие в массиве обязательных ключей
      *
      * @param array $array Обрабатываемый массив
-     * @param $requiredKeys Массив обязательных параметров
+     * @param array $requiredKeys Массив обязательных параметров
      *
      * @throws \Exception
      */

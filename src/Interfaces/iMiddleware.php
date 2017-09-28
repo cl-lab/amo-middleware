@@ -13,10 +13,12 @@ interface iMiddleware
     /**
      * Возвращает информацию по аккаунту.
      *
+     * @link https://developers.amocrm.ru/rest_api/accounts_current.php
+     *
      * @param bool $short Краткий формат, только основные поля
      * @param array $parameters Ассоциативный массив параметров к amoCRM API
      *
-     * @return array
+     * @return array Ответ amoCRM API
      */
     public function getAccount($short = false, $parameters = array());
 
@@ -26,22 +28,26 @@ interface iMiddleware
      *
      * @param string $login Логин пользователя
      *
-     * @return mixed
+     * @return mixed Данные о пользователе
      */
     public function getUserByLogin($login);
 
     /**
      * Возвращает список контактов.
      *
+     * @link https://developers.amocrm.ru/rest_api/contacts_list.php
+     *
      * @param array $parameters Ассоциативный массив параметров
      * @param null|string $modified Дополнительная фильтрация по (изменено с)
      *
-     * @return array
+     * @return array Ответ amoCRM API
      */
     public function getContacts($parameters, $modified = null);
 
     /**
      * Добавляет контакт
+     *
+     * @link https://developers.amocrm.ru/rest_api/contacts_set.php
      *
      * @param array $parameters Ассоциативный массив параметров
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
@@ -53,6 +59,8 @@ interface iMiddleware
     /**
      * Групповое добавление контактов
      *
+     * @link https://developers.amocrm.ru/rest_api/contacts_set.php
+     *
      * @param array $dataList Список массивов содержащих параметры
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
@@ -62,6 +70,8 @@ interface iMiddleware
 
     /**
      * Обновляет контакт
+     *
+     * @link https://developers.amocrm.ru/rest_api/contacts_set.php
      *
      * @param int $id Идентификатор контакта
      * @param array $parameters Ассоциативный массив параметров
@@ -75,9 +85,11 @@ interface iMiddleware
     /**
      * Возвращает связи между сделками и контактами
      *
+     * @link https://developers.amocrm.ru/rest_api/contacts_links.php
+     *
      * @param array $parameters Ассоциативный массив параметров
      *
-     * @return array
+     * @return array Ответ amoCRM API
      */
     public function getContactLinks($parameters);
 
@@ -636,7 +648,6 @@ interface iMiddleware
      * @link https://developers.amocrm.ru/rest_api/widgets/set.php
      *
      * @return array Ответ amoCRM API
-     * @throws \Exception
      */
     public function widgetUninstall($parameters);
 
@@ -757,4 +768,63 @@ interface iMiddleware
      * @return bool Флаг успешности выполнения запроса
      */
     public function deleteCatalogElement($id);
+
+    /**
+     * Возвращает список ссылок.
+     *
+     * @link https://developers.amocrm.ru/rest_api/links/list.php
+     *
+     * @param array $parameters Ассоциативный массив параметров
+     *
+     * @return array Ответ amoCRM API
+     */
+    public function getLinks($parameters);
+
+    /**
+     * Устанавливает связь между сущностями
+     *
+     * @link https://developers.amocrm.ru/rest_api/links/set.php
+     *
+     * @param array $parameters Ассоциативный массив параметров
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
+     *
+     * @return bool Флаг успешности выполнения запроса
+     */
+    public function addLink($parameters, $debug = false);
+
+    /**
+     * Групповое добавление связей между сущностями
+     *
+     * @link https://developers.amocrm.ru/rest_api/links/set.php
+     *
+     * @param array $dataList Список массивов содержащих параметры
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
+     *
+     * @return bool Флаг успешности выполнения запроса
+     */
+    public function addGroupOfLinks($dataList, $debug = false);
+
+    /**
+     * Разрывает связь между сущностями
+     *
+     * @link https://developers.amocrm.ru/rest_api/links/set.php
+     *
+     * @param array $parameters Ассоциативный массив параметров
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
+     *
+     * @return bool
+     */
+    public function deleteLink($parameters, $debug = false);
+
+    /**
+     * Групповое разрывание связей между сущностями
+     *
+     * @link https://developers.amocrm.ru/rest_api/links/set.php
+     *
+     * @param array $dataList Список массивов содержащих параметры
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
+     *
+     * @return bool Флаг успешности выполнения запроса
+     */
+    public function deleteGroupOfLinks($dataList, $debug = false);
 }

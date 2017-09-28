@@ -55,12 +55,13 @@ class Middleware implements iMiddleware
 
     /**
      * Возвращает информацию по аккаунту.
-     * Эквивалентно методу /private/api/v2/json/accounts/current
+     *
+     * @link https://developers.amocrm.ru/rest_api/accounts_current.php
      *
      * @param bool $short Краткий формат, только основные поля
      * @param array $parameters Ассоциативный массив параметров к amoCRM API
      *
-     * @return array
+     * @return array Ответ amoCRM API
      */
     public function getAccount($short = false, $parameters = array())
     {
@@ -75,7 +76,7 @@ class Middleware implements iMiddleware
      *
      * @param string $login Логин пользователя
      *
-     * @return mixed
+     * @return mixed Данные о пользователе
      */
     public function getUserByLogin($login)
     {
@@ -86,12 +87,13 @@ class Middleware implements iMiddleware
 
     /**
      * Возвращает список контактов.
-     * Эквивалентно методу contacts/list
+     *
+     * @link https://developers.amocrm.ru/rest_api/contacts_list.php
      *
      * @param array $parameters Ассоциативный массив параметров
      * @param null|string $modified Дополнительная фильтрация по (изменено с)
      *
-     * @return array
+     * @return array Ответ amoCRM API
      */
     public function getContacts($parameters, $modified = null)
     {
@@ -100,6 +102,8 @@ class Middleware implements iMiddleware
 
     /**
      * Добавляет контакт
+     *
+     * @link https://developers.amocrm.ru/rest_api/contacts_set.php
      *
      * @param array $parameters Ассоциативный массив параметров
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
@@ -114,6 +118,8 @@ class Middleware implements iMiddleware
     /**
      * Групповое добавление контактов
      *
+     * @link https://developers.amocrm.ru/rest_api/contacts_set.php
+     *
      * @param array $dataList Список массивов содержащих параметры
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
@@ -126,6 +132,8 @@ class Middleware implements iMiddleware
 
     /**
      * Обновляет контакт
+     *
+     * @link https://developers.amocrm.ru/rest_api/contacts_set.php
      *
      * @param int $id Идентификатор контакта
      * @param array $parameters Ассоциативный массив параметров
@@ -142,9 +150,11 @@ class Middleware implements iMiddleware
     /**
      * Возвращает связи между сделками и контактами
      *
+     * @link https://developers.amocrm.ru/rest_api/contacts_links.php
+     *
      * @param array $parameters Ассоциативный массив параметров
      *
-     * @return array
+     * @return array Ответ amoCRM API
      * @throws \Exception
      */
     public function getContactLinks($parameters)
@@ -1327,6 +1337,124 @@ class Middleware implements iMiddleware
     }
 
     /**
+     * Возвращает список ссылок.
+     *
+     * @link https://developers.amocrm.ru/rest_api/links/list.php
+     *
+     * @param array $parameters Ассоциативный массив параметров
+     *
+     * @return array Ответ amoCRM API
+     */
+    public function getLinks($parameters)
+    {
+        $requiredFields = array(
+            'from',
+            'from_id',
+        );
+        $this->checkRequiredKeys($parameters, $requiredFields);
+
+        $allowFields = array(
+            'to',
+            'to_id',
+            'from_catalog_id',
+            'to_catalog_id',
+        );
+        $this->removeNotAllowKeys(
+            $parameters,
+            array_merge($requiredFields, $allowFields)
+        );
+
+        return $this->getObjects('links', $parameters);
+    }
+
+    /**
+     * Устанавливает связь между сущностями
+     *
+     * @link https://developers.amocrm.ru/rest_api/links/set.php
+     *
+     * @param array $parameters Ассоциативный массив параметров
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
+     *
+     * @return bool Флаг успешности выполнения запроса
+     * @throws \Exception
+     */
+    public function addLink($parameters, $debug = false)
+    {
+        $link = $this->getLinkObject($parameters, $debug);
+
+        return $link->apiLink();
+    }
+
+    /**
+     * Групповое добавление связей между сущностями
+     *
+     * @link https://developers.amocrm.ru/rest_api/links/set.php
+     *
+     * @param array $dataList Список массивов содержащих параметры
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
+     *
+     * @return bool Флаг успешности выполнения запроса
+     * @throws \Exception
+     */
+    public function addGroupOfLinks($dataList, $debug = false)
+    {
+        if (!is_array($dataList)) {
+            throw new \Exception('$dataList not valid. $dataList must be an array');
+        }
+
+        $arrOfLinks = array();
+
+        foreach ($dataList as $k => $linkParameters) {
+            $arrOfLinks[] = getLinkObject($linkParameters, $debug);
+        }
+
+        return $this->getAmo()->links->apiLink($arrOfLinks);
+    }
+
+    /**
+     * Разрывает связь между сущностями
+     *
+     * @link https://developers.amocrm.ru/rest_api/links/set.php
+     *
+     * @param array $parameters Ассоциативный массив параметров
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
+     *
+     * @return bool
+     */
+    public function deleteLink($parameters, $debug = false)
+    {
+        $link = $this->getLinkObject($parameters, $debug);
+
+        return $link->apiUnlink();
+    }
+
+    /**
+     * Групповое разрывание связей между сущностями
+     *
+     * @link https://developers.amocrm.ru/rest_api/links/set.php
+     *
+     * @param array $dataList Список массивов содержащих параметры
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
+     *
+     * @return bool Флаг успешности выполнения запроса
+     * @throws \Exception
+     */
+    public function deleteGroupOfLinks($dataList, $debug = false)
+    {
+        if (!is_array($dataList)) {
+            throw new \Exception('$dataList not valid. $dataList must be an array');
+        }
+
+        $arrOfLinks = array();
+
+        foreach ($dataList as $k => $linkParameters) {
+            $arrOfLinks[] = getLinkObject($linkParameters, $debug);
+        }
+
+        return $this->getAmo()->links->apiUnlink($arrOfLinks);
+    }
+
+    /**
      * Возвращает объект для работы с библиотекой
      *
      * @return Client
@@ -1507,8 +1635,8 @@ class Middleware implements iMiddleware
     /**
      * Возвращает \AmoCRM\Models\Call объект
      *
-     * @param $parameters
-     * @param $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
+     * @param array $parameters Ассоциативный массив параметров
+     * @param boll $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
      * @return \AmoCRM\Models\Call
      * @throws \Exception
@@ -1543,6 +1671,50 @@ class Middleware implements iMiddleware
         $this->setParameters($call, $parameters);
 
         return $call;
+    }
+
+    /**
+     * Возвращает \AmoCRM\Models\Links объект
+     *
+     * @param array $parameters Ассоциативный массив параметров
+     * @param bool $debug
+     *
+     * @return \AmoCRM\Models\Links
+     * @throws \Exception
+     */
+    private function getLinkObject($parameters, $debug)
+    {
+        if (!is_array($parameters)) {
+            throw new \Exception('$parameters not valid. $parameters must be an array');
+        }
+
+        $requiredFields = array(
+            'from',
+            'from_id',
+            'to',
+            'to_id',
+        );
+        $this->checkRequiredKeys($parameters, $requiredFields);
+
+        $allowFields = array(
+            'from_catalog_id',
+            'to_catalog_id',
+            'quantity',
+        );
+        $this->removeNotAllowKeys(
+            $parameters,
+            array_merge($requiredFields, $allowFields)
+        );
+
+        $amo = $this->getAmo();
+
+        $link = $amo->links;
+        if ($debug) {
+            $link->debug(true);
+        }
+        $this->setParameters($link, $parameters);
+
+        return $link;
     }
 
     /**

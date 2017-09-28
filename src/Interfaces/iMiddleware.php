@@ -605,4 +605,38 @@ interface iMiddleware
      * @return array Массив уникальных идентификаторов
      */
     public function setCustomerPeriod($dataList, $debug = false);
+
+    /**
+     * Возвращает список виджетов.
+     *
+     * @link https://developers.amocrm.ru/rest_api/unsorted/list.php
+     *
+     * @param array $parameters Массив параметров для выборки объектов
+     *
+     * @return array Ответ amoCRM API
+     */
+    public function getWidgets($parameters = array());
+
+    /**
+     * Включение виджетов
+     *
+     * @param $parameters Массив параметров для включения виджета
+     *
+     * @link https://developers.amocrm.ru/rest_api/widgets/set.php
+     *
+     * @return array Ответ amoCRM API
+     */
+    public function widgetInstall($parameters);
+
+    /**
+     * Выключение виджетов
+     *
+     * @param $parameters Массив параметров для выключения виджета
+     *
+     * @link https://developers.amocrm.ru/rest_api/widgets/set.php
+     *
+     * @return array Ответ amoCRM API
+     * @throws \Exception
+     */
+    public function widgetUninstall($parameters);
 }

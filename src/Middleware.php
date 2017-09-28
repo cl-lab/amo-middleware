@@ -1088,6 +1088,87 @@ class Middleware implements iMiddleware
     }
 
     /**
+     * Возвращает список виджетов.
+     *
+     * @link https://developers.amocrm.ru/rest_api/unsorted/list.php
+     *
+     * @param array $parameters Массив параметров для выборки объектов
+     *
+     * @return array Ответ amoCRM API
+     */
+    public function getWidgets($parameters = array())
+    {
+        $allowFields = array(
+            'widget_id',
+            'widget_code',
+        );
+
+        $this->removeNotAllowKeys($parameters, $allowFields);
+
+        $amo = $this->getAmo();
+
+        return $amo->widgets->apiList($parameters);
+    }
+
+    /**
+     * Включение виджетов
+     *
+     * @param $parameters Массив параметров для включения виджета
+     *
+     * @link https://developers.amocrm.ru/rest_api/widgets/set.php
+     *
+     * @return array Ответ amoCRM API
+     * @throws \Exception
+     */
+    public function widgetInstall($parameters)
+    {
+        if (!is_array($parameters)) {
+            throw new \Exception();
+        }
+
+        $allowFields = array(
+            'widget_id',
+            'widget_code',
+            'settings',
+        );
+
+        $this->removeNotAllowKeys($parameters, $allowFields);
+
+        $amo = $this->getAmo();
+
+        return $amo->widgets->apiInstall($parameters);
+    }
+
+    /**
+     * Выключение виджетов
+     *
+     * @param $parameters Массив параметров для выключения виджета
+     *
+     * @link https://developers.amocrm.ru/rest_api/widgets/set.php
+     *
+     * @return array Ответ amoCRM API
+     * @throws \Exception
+     */
+    public function widgetUninstall($parameters)
+    {
+        if (!is_array($parameters)) {
+            throw new \Exception();
+        }
+
+        $allowFields = array(
+            'widget_id',
+            'widget_code',
+            'settings',
+        );
+
+        $this->removeNotAllowKeys($parameters, $allowFields);
+
+        $amo = $this->getAmo();
+
+        return $amo->widgets->apiUninstall($parameters);
+    }
+
+    /**
      * Возвращает объект для работы с библиотекой
      *
      * @return Client

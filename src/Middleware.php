@@ -1023,6 +1023,71 @@ class Middleware implements iMiddleware
     }
 
     /**
+     * Возвращает список периодов покупателя
+     *
+     * @link https://developers.amocrm.ru/rest_api/customers_periods/list.php
+     *
+     * @return array Ответ amoCRM API
+     */
+    public function getCustomersPeriods()
+    {
+        $amo = $this->getAmo();
+
+        return $amo->customers_periods->apiList();
+    }
+
+    /**
+     * Добавляет период покупателя
+     *
+     * @param array $parameters Ассоциативный массив параметров
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
+     *
+     * @return int Уникальный идентификатор периода
+     */
+    public function addCustomerPeriod($parameters, $debug = false)
+    {
+        return $this->addObject('customers_periods', $parameters, $debug);
+    }
+
+    /**
+     * Удаление и обновление периодов покупателей.
+     * При изменении необходимо передать полный список периодов, включая уже существующие.
+     * При удалении периода нужно исключить его из запроса.
+     *
+     * @link https://developers.amocrm.ru/rest_api/customers_periods/set.php
+     *
+     * @param $dataList Список массивов содержащих параметры
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
+     *
+     * @return array Массив уникальных идентификаторов
+     * @throws \Exception
+     */
+    public function setCustomerPeriod($dataList, $debug = false)
+    {
+        if (!is_array($dataList)) {
+            throw new \Exception('$dataList must be an array');
+        }
+
+        $arrOfPeriods = array();
+
+        $amo = $this->getAmo();
+
+        foreach ($dataList as $k => $data) {
+            if (!is_array($data)) {
+                throw new \Exception('Data not valid');
+            }
+            $period = $amo->customers_periods;
+            if ($debug) {
+                $period->debug(true);
+            }
+            $this->setParameters($period, $data);
+            $arrOfPeriods[] = $period;
+        }
+
+        return $amo->customers_periods->apiSet($arrOfPeriods);
+    }
+
+    /**
      * Возвращает объект для работы с библиотекой
      *
      * @return Client

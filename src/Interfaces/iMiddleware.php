@@ -572,4 +572,37 @@ interface iMiddleware
      * @return array Ответ amoCRM API
      */
     public function deletePipeline($id);
+
+    /**
+     * Возвращает список периодов покупателя
+     *
+     * @link https://developers.amocrm.ru/rest_api/customers_periods/list.php
+     *
+     * @return array Ответ amoCRM API
+     */
+    public function getCustomersPeriods();
+
+    /**
+     * Добавляет период покупателя
+     *
+     * @param array $parameters Ассоциативный массив параметров
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
+     *
+     * @return int Уникальный идентификатор периода
+     */
+    public function addCustomerPeriod($parameters, $debug = false);
+
+    /**
+     * Удаление и обновление периодов покупателей.
+     * При изменении необходимо передать полный список периодов, включая уже существующие.
+     * При удалении периода нужно исключить его из запроса.
+     *
+     * @link https://developers.amocrm.ru/rest_api/customers_periods/set.php
+     *
+     * @param $dataList Список массивов содержащих параметры
+     * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
+     *
+     * @return array Массив уникальных идентификаторов
+     */
+    public function setCustomerPeriod($dataList, $debug = false);
 }

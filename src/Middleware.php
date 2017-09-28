@@ -170,12 +170,13 @@ class Middleware implements iMiddleware
 
     /**
      * Возвращает список сделок
-     * Эквивалентно методу leads/list
+     *
+     * @link https://developers.amocrm.ru/rest_api/leads_list.php
      *
      * @param array $parameters Ассоциативный массив параметров
      * @param null|string $modified Дополнительная фильтрация по (изменено с)
      *
-     * @return array
+     * @return array Ответ amoCRM API
      */
     public function getLeads($parameters, $modified = null)
     {
@@ -184,6 +185,8 @@ class Middleware implements iMiddleware
 
     /**
      * Добавляет сделку
+     *
+     * @link https://developers.amocrm.ru/rest_api/leads_set.php
      *
      * @param array $parameters Ассоциативный массив параметров
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
@@ -198,6 +201,8 @@ class Middleware implements iMiddleware
     /**
      * Групповое добавление сделок
      *
+     * @link https://developers.amocrm.ru/rest_api/leads_set.php
+     *
      * @param array $dataList Список массивов содержащих параметры
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
@@ -210,6 +215,8 @@ class Middleware implements iMiddleware
 
     /**
      * Обновляет сделку
+     *
+     * @link https://developers.amocrm.ru/rest_api/leads_set.php
      *
      * @param int $id Идентификатор сделки
      * @param array $parameters Ассоциативный массив параметров
@@ -225,12 +232,13 @@ class Middleware implements iMiddleware
 
     /**
      * Возвращает список компаний.
-     * Эквивалентно методу company/list
+     *
+     * @link https://developers.amocrm.ru/rest_api/company_list.php
      *
      * @param array $parameters Ассоциативный массив параметров
      * @param null|string $modified Дополнительная фильтрация по (изменено с)
      *
-     * @return array
+     * @return array Ответ amoCRM API
      */
     public function getCompanies($parameters, $modified = null)
     {
@@ -239,6 +247,8 @@ class Middleware implements iMiddleware
 
     /**
      * Добавляет компанию
+     *
+     * @link https://developers.amocrm.ru/rest_api/company_set.php
      *
      * @param array $parameters Ассоциативный массив параметров
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
@@ -253,6 +263,8 @@ class Middleware implements iMiddleware
     /**
      * Групповое добавление компаний
      *
+     * @link https://developers.amocrm.ru/rest_api/company_set.php
+     *
      * @param array $dataList Список массивов содержащих параметры
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
@@ -265,6 +277,8 @@ class Middleware implements iMiddleware
 
     /**
      * Обновляет компанию
+     *
+     * @link https://developers.amocrm.ru/rest_api/company_set.php
      *
      * @param int $id Идентификатор компании
      * @param array $parameters Ассоциативный массив параметров
@@ -280,12 +294,13 @@ class Middleware implements iMiddleware
 
     /**
      * Возвращает список покупателей.
-     * Эквивалентно customers/list
+     *
+     * @link https://developers.amocrm.ru/rest_api/customers/list.php
      *
      * @param array $parameters Ассоциативный массив параметров
      * @param null|string $modified Дополнительная фильтрация по (изменено с)
      *
-     * @return array
+     * @return array Ответ amoCRM API
      */
     public function getCustomers($parameters, $modified = null)
     {
@@ -294,6 +309,8 @@ class Middleware implements iMiddleware
 
     /**
      * Добавляет покупателя
+     *
+     * @link https://developers.amocrm.ru/rest_api/customers/set.php
      *
      * @param array $parameters Ассоциативный массив параметров
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
@@ -308,6 +325,8 @@ class Middleware implements iMiddleware
     /**
      * Групповое добавление покупателей
      *
+     * @link https://developers.amocrm.ru/rest_api/customers/set.php
+     *
      * @param array $dataList Список массивов содержащих параметры
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
@@ -320,6 +339,8 @@ class Middleware implements iMiddleware
 
     /**
      * Обновляет покупателя
+     *
+     * @link https://developers.amocrm.ru/rest_api/customers/set.php
      *
      * @param int $id Идентификатор покупателя
      * @param array $parameters Ассоциативный массив параметров
@@ -334,12 +355,13 @@ class Middleware implements iMiddleware
 
     /**
      * Возвращает список транзакций.
-     * Эквивалентно методу transactions/list
+     *
+     * @link https://developers.amocrm.ru/rest_api/transactions/list.php
      *
      * @param array $parameters Ассоциативный массив параметров
      * @param null|string $modified Дополнительная фильтрация по (изменено с)
      *
-     * @return array
+     * @return array Ответ amoCRM API
      */
     public function getTransactions($parameters, $modified = null)
     {
@@ -348,6 +370,8 @@ class Middleware implements iMiddleware
 
     /**
      * Добавляет транзакцию
+     *
+     * @link https://developers.amocrm.ru/rest_api/transactions/set.php
      *
      * @param array $parameters Ассоциативный массив параметров
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
@@ -362,6 +386,8 @@ class Middleware implements iMiddleware
     /**
      * Групповое добавление транзакций
      *
+     * @link https://developers.amocrm.ru/rest_api/transactions/set.php
+     *
      * @param array $dataList Список массивов содержащих параметры
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
@@ -374,6 +400,8 @@ class Middleware implements iMiddleware
 
     /**
      * Удаляет транзакцию
+     *
+     * @link https://developers.amocrm.ru/rest_api/transactions/set.php
      *
      * @param int $id Идентификатор транзакции
      *
@@ -388,12 +416,13 @@ class Middleware implements iMiddleware
 
     /**
      * Возвращает список задач.
-     * Эквивалентно методу tasks/list
+     *
+     * @link https://developers.amocrm.ru/rest_api/tasks_list.php
      *
      * @param array $parameters Ассоциативный массив параметров
      * @param null|string $modified Дополнительная фильтрация по (изменено с)
      *
-     * @return array
+     * @return array Ответ amoCRM API
      */
     public function getTasks($parameters, $modified = null)
     {
@@ -402,6 +431,8 @@ class Middleware implements iMiddleware
 
     /**
      * Добавляет задачу
+     *
+     * @link https://developers.amocrm.ru/rest_api/tasks_set.php
      *
      * @param array $parameters Ассоциативный массив параметров
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
@@ -416,6 +447,8 @@ class Middleware implements iMiddleware
     /**
      * Групповое добавление задач
      *
+     * @link https://developers.amocrm.ru/rest_api/tasks_set.php
+     *
      * @param array $dataList Список массивов содержащих параметры
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
@@ -428,6 +461,8 @@ class Middleware implements iMiddleware
 
     /**
      * Обновляет задачу
+     *
+     * @link https://developers.amocrm.ru/rest_api/tasks_set.php
      *
      * @param int $id Идентификатор задачи
      * @param array $text Список массивов содержащих параметры
@@ -451,12 +486,13 @@ class Middleware implements iMiddleware
 
     /**
      * Возвращает список примечаний.
-     * Эквивалентно методу notes/list
+     *
+     * @link https://developers.amocrm.ru/rest_api/notes_list.php
      *
      * @param array $parameters Ассоциативный массив параметров
      * @param null|string $modified Дополнительная фильтрация по (изменено с)
      *
-     * @return array
+     * @return array Ответ amoCRM API
      */
     public function getNotes($parameters, $modified = null)
     {
@@ -465,6 +501,8 @@ class Middleware implements iMiddleware
 
     /**
      * Добавляет примечание
+     *
+     * @link https://developers.amocrm.ru/rest_api/notes_set.php
      *
      * @param array $parameters Ассоциативный массив параметров
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
@@ -479,6 +517,8 @@ class Middleware implements iMiddleware
     /**
      * Групповое добавление примечаний
      *
+     * @link https://developers.amocrm.ru/rest_api/notes_set.php
+     *
      * @param array $dataList Список массивов содержащих параметры
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
@@ -491,6 +531,8 @@ class Middleware implements iMiddleware
 
     /**
      * Обновление примечаний
+     *
+     * @link https://developers.amocrm.ru/rest_api/notes_set.php
      *
      * @param int $id Идентификатор примечания
      * @param array $parameters Ассоциативный массив параметров
@@ -507,6 +549,8 @@ class Middleware implements iMiddleware
     /**
      * Добавляет дополнительное поле
      *
+     * @link https://developers.amocrm.ru/rest_api/fields_set.php
+     *
      * @param array $parameters Ассоциативный массив параметров
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
@@ -520,6 +564,8 @@ class Middleware implements iMiddleware
     /**
      * Групповое добавление дополнительных полей
      *
+     * @link https://developers.amocrm.ru/rest_api/fields_set.php
+     *
      * @param array $dataList Список массивов содержащих параметры
      * @param bool $debug Флаг определяющий режим отладки. Если true, то будет включена отладка
      *
@@ -532,6 +578,8 @@ class Middleware implements iMiddleware
 
     /**
      * Удаляет дополнительное поле
+     *
+     * @link https://developers.amocrm.ru/rest_api/fields_set.php
      *
      * @param int $id Идентификатор дополнительного поля
      * @param string $origin Уникальный идентификатор сервиса заданный при создании параметром origin
@@ -553,7 +601,9 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Добавляет один звонок. Эквивалентно методу /api/calls/add/
+     * Добавляет звонок
+     *
+     * @link https://developers.amocrm.ru/rest_api/calls_set.php
      *
      * @param string $code Уникальный идентификатор сервиса
      * @param string $key Ключ сервиса, который можно получить написав в техническую поддержку amoCRM
@@ -571,7 +621,9 @@ class Middleware implements iMiddleware
     }
 
     /**
-     * Добавляет звонки группой
+     * Групповое добавление звонков
+     *
+     * @link https://developers.amocrm.ru/rest_api/calls_set.php
      *
      * @param string $code Уникальный идентификатор сервиса
      * @param string $key Ключ сервиса, который можно получить написав в техническую поддержку amoCRM

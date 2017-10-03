@@ -1653,9 +1653,9 @@ class Middleware implements iMiddleware
      */
     private function checkRequiredKeys($array, $requiredKeys)
     {
-        foreach ($requiredKeys as $k => $v) {
-            if (!array_key_exists($k, $array)) {
-                throw new \Exception('You must set "' . $k . '" parameter');
+        foreach ($requiredKeys as $v) {
+            if (!array_key_exists($v, $array)) {
+                throw new \Exception('You must set "' . $v . '" parameter');
             }
         }
     }
